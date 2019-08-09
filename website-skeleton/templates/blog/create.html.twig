@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+    {% if editMode %}
+    <h1>Modification de l'article</h1>
+    {% else %}
+    <h1>Création d'un article </h1>
+    {% endif %}
+
+
+    {{ form_start(formArticle) }}
+
+  {{form_row(formArticle.title,{'label':"Titre de l'article",'attr':{'placeholder': "Titre de l'article"}})}}
+  {{form_row(formArticle.content,{'label':"Contenu de l'article",'attr':{'placeholder': "Contenu de l'article"}})}}
+  {{form_row(formArticle.image,{'attr':{'placeholder': "URL de l'image"}})}}
+
+    {#Ici l'on va gérer le bouton submit en fonction de si l'on edite ou si l'on creer un article#}
+    <button type ="submit" class="btn btn-success">
+        {% if editMode %}
+         Enregistrer les modifications
+        {% else %}
+        Enregistrer l'article
+        {% endif %}
+    </button>
+
+    {{ form_end (formArticle) }}
+
+{% endblock %}
+

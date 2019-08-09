@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+   <h1> Connexion à l'Axoblog</h1>
+{#formulaire de connexion en méthode Post pour masquer le mot de de passe #}
+   <form action ="{{ path ('security_login') }}" method="post">
+         <div class="form-group">
+            {# Ici le required name ="_username" est un convention, on doit le préciser
+             meme si l'on souhaite s'authentifier avec l'adresse mail #}
+            <input placeholder="Adresse email" required name="_username" type="text"
+                   class="form-control">
+         </div>
+
+         <div class="form-group">
+            <input placeholder="Mot de passe " required name ="_password"
+                   type ="password" class="form-control">
+         </div>
+
+         <div class="form-group">
+             <button type="submit" class="btn btn-success">Connexion</button>
+         </div>
+   </form>
+
+
+{% endblock %}

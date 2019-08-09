@@ -1,0 +1,65 @@
+security:
+  encoders:
+    App\Entity\User:
+      algorithm: auto
+
+  # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+  providers:
+    in_memory: { memory: null }
+    in_database :
+      entity :
+        class : App\Entity\User
+        property : email
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    #création du firewall admin pour la gestion du blog par l'admin
+    #attention à l'ordre des firewall car Symfo les analyse de haut en bas
+    admin:
+      pattern: ^/admin
+      anonymous : true
+
+      #provider compare avec la base de données les utilisateurs et vérifient leur authification
+      provider: in_database
+
+      #création du formulaire de login pour l'admin et on préciser la route pour ne pas confondre avec le user
+      form_login:
+        login_path: admin_account_login
+        check_path: admin_account_login
+
+      logout :
+        path: account_logout
+        target : home
+
+
+    main:
+      anonymous: true
+
+      provider : in_database
+
+      form_login :
+        login_path : security_login
+        check_path : security_login
+
+      logout :
+        path : security_logout
+        target : blog
+
+
+      # activate different ways to authenticate
+      # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+      # https://symfony.com/doc/current/security/impersonating_user.html
+      # switch_user: true
+
+  # Easy way to control access for large sections of your site
+  # Note: Only the *first* access control that matches will be used
+  access_control:
+    #Is Authenticated anonymously autorise toutes les connexions sur la pge admin/login
+    - {path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - {path: ^/admin, roles: ROLE_ADMIN }
+    #ici grace à l'access controle, on précise que tous les liens commençant par /admin nécessitent d'etre en
+    #role admin pour y avoir accés
+    # - { path: ^/profile, roles: ROLE_USER }
