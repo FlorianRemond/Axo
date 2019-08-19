@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Service\StatsService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,15 +13,17 @@ class AdminDashboardController extends AbstractController
     /**
      * @Route("/admin/dashboard", name="admin_dashboard")
      */
-    public function index(ObjectManager $manager)
+    public function index(ObjectManager $manager, StatsService $statsService)
     {
-        $articles = $manager ->createQuery('SELECT a FROM App\Entity\Article a')->getResult();
-        $users = $manager ->createQuery('SELECT u FROM App\Entity\User u')->getResult();
 
-        dump($users);
+        $stats= $statsService->getStats();
 
-        return $this->render('admin/dashboard/index.html.twig', [
-            'controller_name' => 'AdminDashboardController',
+           return $this->render('admin/dashboard/index.html.twig', [
+
+           //compact creee un tableau avec les meme clé que ci dessus
+            'stats' =>$stats
         ]);
+
+
     }
 }

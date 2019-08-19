@@ -12,7 +12,7 @@ class ArticleFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
 
-        for ($i =1; $i <=10; $i ++){
+        for ($i =1; $i <=100; $i ++){
             $article = new Article();
             $article -> setTitle("titre de l'article n°$i")
                      -> setContent ("<p>Contenu de l'article n$i</p>")

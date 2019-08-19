@@ -11,10 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-
-
-
-
 class BlogController extends AbstractController
 {
     /**
@@ -94,13 +90,13 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/blog/{id}", name="blog_show")
+     * @Route("/blog/{id}", name="blog_usershow")
      * @Security("is_granted('ROLE_USER')")
      */
     public function show (Article $article){
        //$repo = $this -> getDoctrine()-> getRepository(Article::class);
        // $article =$repo -> find($id);
-        return $this -> render('blog/show.html.twig',[
+        return $this -> render('blog/usershow.html.twig',[
             'article' => $article,
         ]);
     }

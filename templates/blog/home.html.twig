@@ -17,7 +17,7 @@
                     <p>Merci de vous connecter pour lire l'intégralité de l'article.</p>
                 {% else %}
                     {{ article.content | raw }}
-                    <a href="{{ path('blog_show',{'id': article.id}) }}" class="btn btn-primary">Lire la suite</a>
+                    <a href="{{ path('blog_usershow',{'id': article.id}) }}" class="btn btn-primary">Lire la suite</a>
                 {% endif %}
 
             </article>

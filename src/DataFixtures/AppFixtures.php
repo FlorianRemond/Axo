@@ -8,6 +8,7 @@ use App\Entity\Role;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+
 class AppFixtures extends Fixture
 {
     private $encoder;
@@ -17,6 +18,7 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        /*
         // $product = new Product();
         // $manager->persist($product);
         $adminRole = new Role();
@@ -31,5 +33,7 @@ class AppFixtures extends Fixture
         $manager->persist($adminUser);
 
         $manager->flush();
+        */
     }
+
 }
