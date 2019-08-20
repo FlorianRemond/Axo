@@ -8,8 +8,11 @@ use App\Repository\ArticleRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\DateTime;
+
 
 class BlogController extends AbstractController
 {
@@ -38,7 +41,6 @@ class BlogController extends AbstractController
             'controller_name' => 'BlogController',
             'articles'=>$articles]);
     }
-
 
     //Utilisation de routes multiples afin d'utiliser une seule fois le formulaire
     /**
@@ -92,12 +94,26 @@ class BlogController extends AbstractController
     /**
      * @Route("/blog/{id}", name="blog_usershow")
      * @Security("is_granted('ROLE_USER')")
+     * @param Article $article
+     * @return Response
      */
     public function show (Article $article){
        //$repo = $this -> getDoctrine()-> getRepository(Article::class);
        // $article =$repo -> find($id);
+
+        $today=Date('Y-M-j');
+        $dateArticle=($article->getCreatedAt());
+        if ($today<$dateArticle){
+            dump($dateArticle);
+        }
+
+      //  dump($today);
+      //  dump ($dateArticle);
         return $this -> render('blog/usershow.html.twig',[
             'article' => $article,
+
+
+
         ]);
     }
 

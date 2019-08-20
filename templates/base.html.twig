@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <title>{% block title %}Axoblog!{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('bootstrap.min.css') }}" >
-        <meta name="viewport" content="width=device-width", user-sclable="no">
+        <meta name="viewport" content="width=device-width, user-scalable=no">
         {% block stylesheets %}{% endblock %}
     </head>
 
@@ -46,6 +46,11 @@
                 </div>
             </nav>
             <div class="container">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
                 {% block body %} {% endblock %}
             </div>
 

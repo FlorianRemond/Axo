@@ -36,7 +36,6 @@ class AdminBlogController extends AbstractController{
         if (!$article){
             $article=new Article ();
         }
-
         $form = $this -> createForm(ArticleType::class,$article);
 
         $form ->handleRequest($request);
@@ -54,7 +53,6 @@ class AdminBlogController extends AbstractController{
         }
         return $this -> render ('admin/blog/create.html.twig',[
             'formArticle' => $form -> createView(),
-
             'editMode' => $article ->getId()!==null
         ]);
     }
@@ -63,6 +61,7 @@ class AdminBlogController extends AbstractController{
      * Suppression des articles en BDD
      * @Route("/admin/{id}/delete", name="admin_article_delete")
      * @param Article $article
+     * @Route("is_granted('ROLE_ADMIN')")
      * @param ObjectManager $manager
      * @return Response
      */

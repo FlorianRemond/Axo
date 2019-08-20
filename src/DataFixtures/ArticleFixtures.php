@@ -2,23 +2,37 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Image;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Article;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Faker\Factory;
 
 class ArticleFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        $faker = Factory::create('fr-FR');
 
-        for ($i =1; $i <=100; $i ++){
+        for ($i = 1; $i <= 5; $i++) {
             $article = new Article();
-            $article -> setTitle("titre de l'article n°$i")
-                     -> setContent ("<p>Contenu de l'article n$i</p>")
-                     -> setImage ("http://placehold.it/350x150")
-                     -> setCreatedAt(new \DateTime());
-         $manager ->persist($article);
+            $title = $faker->sentence();
+            $content = $faker->paragraph(40);
+            $image = $faker->imageUrl(500, 350);
+
+            $article->setTitle(($title))
+                ->setContent($content)
+                ->setImage($image)
+                ->setCreatedAt(new \DateTime());
+
+                        for($j =1; $j <=1; $j ++){
+                            $image = new Image();
+                            $image ->setUrl($faker -> imageUrl())
+                                   ->setArt($article)
+                                   ->setCaption($faker->sentence());
+                            $manager->persist($image);
+                        }
+            $manager->persist($article);
         }
         $manager->flush();
     }

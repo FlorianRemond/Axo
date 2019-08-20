@@ -18,7 +18,7 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        /*
+
         // $product = new Product();
         // $manager->persist($product);
         $adminRole = new Role();
@@ -33,7 +33,7 @@ class AppFixtures extends Fixture
         $manager->persist($adminUser);
 
         $manager->flush();
-        */
+
     }
 
 }

@@ -23,7 +23,10 @@
                 <td>{{ article.id }}</td>
                 <td>{{ article.title }}</td>
                 <td>{{ article.content }}</td>
-                <td>{{ article.image }}</td>
+
+                {% for image in article.images %}
+                <td>{{ image.url }}</td>
+                {% endfor %}
                 <td>
                     <a href="{{ path('admin_article_edit',{'id': article.id}) }}" class="badge badge-primary">Edit</a>
                     <a href="{{ path('admin_article_delete',{'id':article.id}) }}" class="badge badge-danger">Suppr</a>

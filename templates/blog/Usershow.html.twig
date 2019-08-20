@@ -1,15 +1,23 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}
+{{ article.title }}
+{% endblock %}
+
 {% block body %}
-    <article>
+    <article class="container">
         <h2>{{ article.title }}</h2>
+        <br>
         <div class="metadata">
             Ecrit le {{ article.createdAt | date ('d/m/Y')}} à {{ article.createdAt | date ('H:i') }}
         </div>
+        <br>
+        {% for image in article.images %}
         <div class="content">
-            <img src="{{article.image}}" alt="">
-            {{ article.content | raw }}
+            <img src="{{image.url}}" alt="">
         <hr>
-        <p>paragraphe de l'article concerné</p>
+        {% endfor %}
+            {{ article.content | raw }}
         </div>
     </article>
 {% endblock %}

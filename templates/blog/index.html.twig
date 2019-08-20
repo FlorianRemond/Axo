@@ -3,16 +3,21 @@
 {% block title %} Bienvenu sur l'Axoblog {% endblock %}
 
 {% block body %}
+    <div class="container">
+    <h1>Voici les articles d'Axocap</h1>
     {% for article in articles %}
-<section class="articles">
-    <article>
-        <h2>{{article.title}}</h2>
-        <div class="metadata"> Ecrit le {{ article.createdAt | date('d/m/Y') }} à {{ article.createdAt | date ('H:i')  }}</div>
-        <div class="content">  <img src="{{article.image}}" alt="">
-                                     {{ article.content | raw }}
-        <a href="{{ path('blog_usershow',{'id': article.id}) }}" class="btn btn-primary">Lire la suite</a>
-        </div>
-    </article>
-</section>
+        <section class="articles">
+            <article>
+                <h2>{{article.title}}</h2>
+                <div class="metadata"> Ecrit le {{ article.createdAt | date('d/m/Y') }} à {{ article.createdAt | date ('H:i')  }}</div>
+                {% for image in article.images %}
+                <div class="content">  <img src="{{image.url}}" alt="">
+                    {% endfor %}
+                                             {{ article.content | raw }}
+                <a href="{{ path('blog_usershow',{'id': article.id}) }}" class="btn btn-primary">Lire la suite</a>
+                </div>
+            </article>
+        </section>
+    </div>
     {% endfor %}
 {% endblock %}
