@@ -33,28 +33,31 @@ class AdminBlogController extends AbstractController{
      */
 
     public function create (Article $article=null, Request $request, ObjectManager $manager){
-        if (!$article){
-            $article=new Article ();
-        }
-        $form = $this -> createForm(ArticleType::class,$article);
 
-        $form ->handleRequest($request);
-
-        if($form->isSubmitted() && $form ->isValid()){
-            if(!$article ->getId()){
-                $article ->setCreatedAt(new \DateTime());
+            if (!$article) {
+                $article = new Article ();
             }
-            $manager->persist($article);
+            $form = $this->createForm(ArticleType::class, $article);
 
-            $manager->flush();
+            $form->handleRequest($request);
 
-            $this ->addFlash('success','L\' article a bien été crée');
-            return $this ->redirectToRoute('admin_article_index');
-        }
-        return $this -> render ('admin/blog/create.html.twig',[
-            'formArticle' => $form -> createView(),
-            'editMode' => $article ->getId()!==null
-        ]);
+            if ($form->isSubmitted() && $form->isValid()) {
+                if (!$article->getId()) {
+                    $article->setCreatedAt(new \DateTime());
+                    
+                }
+                $manager->persist($article);
+
+                $manager->flush();
+
+                $this->addFlash('success', 'L\' article a bien été crée');
+                return $this->redirectToRoute('admin_article_index');
+            }
+            return $this->render('admin/blog/create.html.twig', [
+                'formArticle' => $form->createView(),
+                'editMode' => $article->getId() !== null
+            ]);
+
     }
 
     /**

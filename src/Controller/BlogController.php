@@ -11,14 +11,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints\DateTime;
-
 
 class BlogController extends AbstractController
 {
-
-
-
     //route principale sans adresse
     /**
      * @Route("/",name="home")
@@ -39,6 +34,7 @@ class BlogController extends AbstractController
      *
      */
     public function create (Article $article = null, Request $request, ObjectManager $manager){
+
         if(!$article) {
             $article = new Article();
         }
@@ -86,17 +82,14 @@ class BlogController extends AbstractController
      * @param Article $article
      * @return Response
      */
-    public function show (Article $article){
-       //$repo = $this -> getDoctrine()-> getRepository(Article::class);
-       // $article =$repo -> find($id);
 
-        return $this -> render('blog/usershow.html.twig',[
+    public function show (Article $article)
+    {
+        //$repo = $this -> getDoctrine()-> getRepository(Article::class);
+        // $article =$repo -> find($id);
+
+        return $this->render('blog/usershow.html.twig', [
             'article' => $article,
-
-
-
         ]);
     }
-
-
 }
