@@ -16,24 +16,13 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 class BlogController extends AbstractController
 {
-    /**
-     * @Route("/blog", name="blog")
-     * @Security("is_granted('ROLE_USER')")
-     */
-    //injection de dépendance dans la fonction index
-    public function index(ArticleRepository $repo)
-    {
-            //$repo=$this ->getDoctrine()->getRepository(Article::class);
-            $articles = $repo -> findAll();
-            return $this ->render('blog/index.html.twig',[
-            'controller_name' => 'BlogController',
-             'articles'=>$articles]);
-    }
+
 
 
     //route principale sans adresse
     /**
      * @Route("/",name="home")
+     * @Route("/blog",name="blog")
      */
     public function home(ArticleRepository $repo){
         $articles = $repo -> findAll();

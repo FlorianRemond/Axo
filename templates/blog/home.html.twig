@@ -3,28 +3,41 @@
 {% block body %}
 
 <h1>Bienvenu sur l'Axoblog ! </h1>
-
-
-
     {% for article in articles %}
         <section class="articles">
             <article>
                 <h2>{{article.title}}</h2>
                   <div class="metadata"> Ecrit le {{ article.createdAt | date('d/m/Y') }} à {{ article.createdAt | date ('H:i')  }}</div>
-                <div class="content">  <img src="{{article.image}}" alt=""></div>
+                  <div class="content">  <img src="{{article.image}}" alt=""></div>
+                <br>
 
-                {% if not app.user %}
-                    <p>Merci de vous connecter pour lire l'intégralité de l'article.</p>
-                {% else %}
-                    <br>
-                    {{ article.content | raw }}
-                    <br>
+                {% if app.user and article.isPrivate %}
+                    <div>
+                        {{ article.content | raw }}
+                    </div>
+                <br>
                     <a href="{{ path('blog_usershow',{'id': article.id}) }}" class="btn btn-primary">Lire la suite</a>
-                    <hr>
                 {% endif %}
 
+                {% if article.isPrivate and not app.user  %}
+                    <div>
+                        {{ article.content | raw | truncate(50)}}
+                    </div>
+                    <br>
+                    <div> Merci de vous connecter pour lire la suite</div>
+                {% endif %}
+
+
+                {% if article.isPrivate == false %}
+                <div>
+                    {{ article.content | raw }}
+                </div>
+                <br>
+                    <a href="{{ path('blog_usershow',{'id': article.id}) }}" class="btn btn-primary">Lire la suite</a>
+                <br>
+                {% endif %}
+                <hr>
             </article>
         </section>
     {% endfor %}
-
 {% endblock %}
