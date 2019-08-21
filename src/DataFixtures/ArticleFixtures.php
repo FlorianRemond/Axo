@@ -19,10 +19,13 @@ class ArticleFixtures extends Fixture
             $title = $faker->sentence();
             $content = $faker->paragraph(40);
             $image = $faker->imageUrl(500, 350);
+            $publishedAt = $faker->dateTimeBetween($startDate='+1 years', $endDate ='+2 years');
+
 
             $article->setTitle(($title))
                 ->setContent($content)
                 ->setImage($image)
+                ->setPublishedAt($publishedAt)
                 ->setCreatedAt(new \DateTime());
 
                         for($j =1; $j <=1; $j ++){

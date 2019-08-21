@@ -101,14 +101,6 @@ class BlogController extends AbstractController
        //$repo = $this -> getDoctrine()-> getRepository(Article::class);
        // $article =$repo -> find($id);
 
-        $today=Date('Y-M-j');
-        $dateArticle=($article->getCreatedAt());
-        if ($today<$dateArticle){
-            dump($dateArticle);
-        }
-
-      //  dump($today);
-      //  dump ($dateArticle);
         return $this -> render('blog/usershow.html.twig',[
             'article' => $article,
 

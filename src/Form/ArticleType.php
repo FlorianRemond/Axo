@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -19,6 +20,7 @@ class ArticleType extends AbstractType
             ->add('content')
             ->add('image',UrlType::class)
             ->add('publishedAt',DateType::class)
+            ->add ('isPrivate')
         ;
     }
 

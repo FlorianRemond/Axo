@@ -58,6 +58,11 @@ class Article
      */
     private $publishedAt;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isPrivate;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -157,6 +162,18 @@ class Article
     public function setPublishedAt(?\DateTimeInterface $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
+
+        return $this;
+    }
+
+    public function getIsPrivate(): ?bool
+    {
+        return $this->isPrivate;
+    }
+
+    public function setIsPrivate(bool $isPrivate): self
+    {
+        $this->isPrivate = $isPrivate;
 
         return $this;
     }

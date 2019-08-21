@@ -11,8 +11,11 @@
             <tr>
                 <th>ID</th>
                 <th>Titre</th>
+                <th>Ecrit le:</th>
                 <th>Contenu</th>
                 <th>Image</th>
+                <th>Date publication</th>
+                <th>Diffusion privée</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -22,11 +25,14 @@
             <tr>
                 <td>{{ article.id }}</td>
                 <td>{{ article.title }}</td>
+                <td>{{ article.createdAt | date('Y-M-j') }}</td>
                 <td>{{ article.content }}</td>
 
                 {% for image in article.images %}
                 <td>{{ image.url }}</td>
                 {% endfor %}
+                <td>{{ article.publishedAt | date('Y-M-j') }}</td>
+                <td>{{ article.isPrivate }}</td>
                 <td>
                     <a href="{{ path('admin_article_edit',{'id': article.id}) }}" class="badge badge-primary">Edit</a>
                     <a href="{{ path('admin_article_delete',{'id':article.id}) }}" class="badge badge-danger">Suppr</a>
