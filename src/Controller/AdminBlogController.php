@@ -44,7 +44,7 @@ class AdminBlogController extends AbstractController{
             if ($form->isSubmitted() && $form->isValid()) {
                 if (!$article->getId()) {
                     $article->setCreatedAt(new \DateTime());
-                    
+
                 }
                 $manager->persist($article);
 

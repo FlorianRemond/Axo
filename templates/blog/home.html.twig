@@ -6,43 +6,45 @@
 
     {# Ici on sort la liste des articles #}
     {% for article in articles %}
-        <section class="articles">
-            <article>
-                <h2>{{article.title}}</h2>
-                  <div class="metadata"> Ecrit le {{ article.createdAt | date('d/m/Y') }} à {{ article.createdAt | date ('H:i')  }}</div>
-                  <div class="content">  <img src="{{article.image}}" alt=""></div>
-                <br>
-    {# On applique des conditions telles que : si utilisateur connecté et que l'article est privé, le contenu s'affiche #}
-                {% if app.user and article.isPrivate %}
-                    <div>
-    {# Le filtre truncate tronque le résumé à 200 caractères  #}
-                        {{ article.content | raw | truncate (200)}}
-                    </div>
-                <br>
-                    <a href="{{ path('blog_usershow',{'id': article.id}) }}" class="btn btn-primary">Lire la suite</a>
-                {% endif %}
+        {#Ici on affiche les articles en fonction de leur date de publication#}
+        {% if article.publishedAt <= date() %}
+            <section class="articles">
+                <article>
+                    <h2>{{article.title}}</h2>
+                      <div class="metadata"> Ecrit le {{ article.createdAt | date('d/m/Y') }} à {{ article.createdAt | date ('H:i')  }}</div>
+                      <div class="content">  <img src="{{article.image}}" alt=""></div>
+                    <br>
+        {# On applique des conditions telles que : si utilisateur connecté et que l'article est privé, le contenu s'affiche #}
+                    {% if app.user and article.isPrivate %}
+                        <div>
+        {# Le filtre truncate tronque le résumé à 200 caractères  #}
+                            {{ article.content | raw | truncate (200)}}
+                        </div>
+                    <br>
+                        <a href="{{ path('blog_usershow',{'id': article.id}) }}" class="btn btn-primary">Lire la suite</a>
+                    {% endif %}
 
-    {# On applique des conditions telles que : si utilisateur n'est pas  connecté et que l'article est privé, le contenu
-     ne s'affiche pas et demande au User de s'identifier #}
-                {% if article.isPrivate and not app.user  %}
+        {# On applique des conditions telles que : si utilisateur n'est pas  connecté et que l'article est privé, le contenu
+         ne s'affiche pas et demande au User de s'identifier #}
+                    {% if article.isPrivate and not app.user  %}
+                        <div>
+                            {{ article.content | raw | truncate(200)}}
+                        </div>
+                        <br>
+                        <div> Merci de vous connecter pour lire la suite.</div>
+                        <a href="{{ path('security_login')}}" class="badge badge-primary">Connexion</a>
+                    {% endif %}
+        {# Ici on affiche le contenu de l'article dans le cas ou celui est public, sans prise en compte de l'état du User#}
+                    {% if article.isPrivate == false %}
                     <div>
-                        {{ article.content | raw | truncate(200)}}
+                        {{ article.content | raw }}
                     </div>
                     <br>
-                    <div> Merci de vous connecter pour lire la suite.</div>
-                    <a href="{{ path('security_login')}}" class="badge badge-primary">Connexion</a>
-
-                {% endif %}
-
-    {# Ici on affiche le contenu de l'article dans le cas ou celui est public, sans prise en compte de l'état du User#}
-                {% if article.isPrivate == false %}
-                <div>
-                    {{ article.content | raw }}
-                </div>
-                <br>
-                {% endif %}
-                <hr>
-            </article>
-        </section>
+                    {% endif %}
+                    <hr>
+                </article>
+            </section>
+        {% endif %}
     {% endfor %}
+
 {% endblock %}

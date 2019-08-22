@@ -7,6 +7,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Article;
 use Faker\Factory;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class ArticleFixtures extends Fixture
 {
@@ -20,13 +21,15 @@ class ArticleFixtures extends Fixture
             $content = $faker->paragraph(40);
             $image = $faker->imageUrl(500, 350);
             $publishedAt = $faker->dateTimeBetween($startDate='+1 years', $endDate ='+2 years');
+            $isPrivate=$faker->numberBetween(0,1);
 
 
             $article->setTitle(($title))
                 ->setContent($content)
                 ->setImage($image)
                 ->setPublishedAt($publishedAt)
-                ->setCreatedAt(new \DateTime());
+                ->setCreatedAt(new \DateTime())
+                ->setIsPrivate($isPrivate);
 
                         for($j =1; $j <=1; $j ++){
                             $image = new Image();
