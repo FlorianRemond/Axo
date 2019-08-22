@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\User;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -58,6 +60,7 @@ class AdminBlogController extends AbstractController{
                 'editMode' => $article->getId() !== null
             ]);
 
+
     }
 
     /**
@@ -75,5 +78,8 @@ class AdminBlogController extends AbstractController{
         return $this ->redirectToRoute('admin_article_index');
 
     }
+
+
+
 
 }
