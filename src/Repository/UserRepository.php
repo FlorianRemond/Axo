@@ -19,6 +19,15 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    public function findMailUsers(){
+        return $this ->createQueryBuilder('u')
+            ->select('u.email')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
