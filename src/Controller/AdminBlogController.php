@@ -21,7 +21,7 @@ class AdminBlogController extends AbstractController{
      * @Route("/admin/articles", name="admin_article_index")
      * @Route("is_granted('ROLE_ADMIN')")
      */
-    public function index(ArticleRepository $repo)
+    public function index(ArticleRepository $repo, UserRepository $userRepo)
     {
         return $this->render('admin/blog/index.html.twig', [
             'articles' => $repo->findAll()
@@ -35,7 +35,6 @@ class AdminBlogController extends AbstractController{
      */
 
     public function create (Article $article=null, Request $request, ObjectManager $manager){
-
             if (!$article) {
                 $article = new Article ();
             }
@@ -49,19 +48,20 @@ class AdminBlogController extends AbstractController{
 
                 }
                 $manager->persist($article);
-
                 $manager->flush();
 
+
                 $this->addFlash('success', 'L\' article a bien été crée');
-                return $this->redirectToRoute('admin_article_index');
+                return $this->redirectToRoute('admin_mail');
             }
             return $this->render('admin/blog/create.html.twig', [
                 'formArticle' => $form->createView(),
                 'editMode' => $article->getId() !== null
             ]);
-
-
     }
+
+
+
 
     /**
      * Suppression des articles en BDD
@@ -78,8 +78,4 @@ class AdminBlogController extends AbstractController{
         return $this ->redirectToRoute('admin_article_index');
 
     }
-
-
-
-
 }
