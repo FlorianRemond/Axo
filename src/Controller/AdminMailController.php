@@ -16,7 +16,7 @@ class AdminMailController extends AbstractController
 
     public function indexMail ( \Swift_Mailer $mailer, UserRepository $userRepo)
     {
- 
+
        /* Ici on fait appel au userRepo pour récupérer les mails en base afin de les passer ensuite à setTo sous la forme
        attendu pour une mailing list */
 
@@ -28,7 +28,7 @@ class AdminMailController extends AbstractController
         }
 
         $message = (new \Swift_Message('Message informatif en provenance d\'Axocap'))
-            ->setFrom('test@gmaili.com')
+            ->setFrom('AxocapMailing@gmail.com')
             ->setTo($destinataires)
             ->setBody('Un nouvel article d\'Axocap est paru, il n\'attend que vôtre lecture ! ');
         $mailer->send($message);
