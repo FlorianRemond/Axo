@@ -7,11 +7,14 @@ use App\Form\AccountType;
 use App\Form\PasswordUpdateType;
 use App\Form\RegistrationType;
 use Doctrine\Common\Persistence\ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\User;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -83,6 +86,7 @@ class SecurityController extends AbstractController
     //formulaire de modification du profil
     /**
      * @Route("/account/profile", name="account_profile")
+     * @Security("is_granted('ROLE_USER')")
      * @return Response
      */
     public function profile(Request $request, ObjectManager $manager){
@@ -111,6 +115,7 @@ class SecurityController extends AbstractController
     /**
      * Permet de modifier le mot de passe
      * @Route("/account/password-update",name="account_password_update")
+     * @Security("is_granted('ROLE_USER')")
      * @return Response
      */
 
@@ -122,15 +127,18 @@ class SecurityController extends AbstractController
             $formPassword =$this ->createForm(PasswordUpdateType::class,$passwordUpdate);
 
             $formPassword->handleRequest($request);
+
             if($formPassword->isSubmitted() && $formPassword->isValid()){
-                //vérification de l'ancien mot de passe par rapport à la base
-                if(!password_verify($passwordUpdate->getOldPassword(), $user->getHash())){
-                //gestion de l'erreur
+                // Vérification de l'ancien mot de passe par rapport à la base
+               if (!password_verify($passwordUpdate->getOldPassword(), $user -> getPassword())){
+                // Gestion de l'erreur
+                    $formPassword->get('oldPassword')-> addError(new FormError("Le mot de passe fourni n'est 
+                    pas le bon mot de passe"));
                 }else{
                     $newPassword = $passwordUpdate->getNewPassword();
                     $hash=$encoder->encodePassword($user, $newPassword);
 
-                    $user->setHash($hash);
+                    $user->setPassword($hash);
 
                     $manager->persist($user);
                     $manager->flush();

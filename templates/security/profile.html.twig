@@ -5,11 +5,15 @@
 {% block body %}
     <div class="container">
         <h1>Modification du profil</h1>
+    </div>
+
         {{ form_start(formProfile) }}
-        {{ form_widget(formProfile) }}
+
+        {{ form_row(formProfile.email,{'label':"Adresse Email :", 'attr':{'placeholder': "Adresse à modifier"}}) }}
+        {{ form_row(formProfile.username,{'label':"Nom d'utilisateur :", 'attr':{'placeholder':"Nom d'utilisateur à modifier"}}) }}
 
         <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
 
         {{ form_end(formProfile) }}
-    </div>
+
 {% endblock %}

@@ -8,3 +8,7 @@ Voir l'upload d'image
 Voir API
 Voir combien de connexion sur le site
 Revoir édition du profil
+
+voir les champs de modification de mots de passe
+
+faire le lien nav barre vers modification de mot de passe
