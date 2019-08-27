@@ -6,10 +6,15 @@
 {#formulaire de connexion en méthode Post pour masquer le mot de de passe #}
    <form action ="{{ path ('security_login') }}" method="post">
          <div class="form-group">
+
+            {#On va récupérer l'état de la variable hasError et mettre en place une condition et un message d'erreur #}
+             {% if hasError %}
+             <div class="alert alert-danger">Une erreur est survenue, merci de vérifier vos identifiants.</div>
+             {% endif %}
             {# Ici le required name ="_username" est un convention, on doit le préciser
              meme si l'on souhaite s'authentifier avec l'adresse mail #}
-            <input placeholder="Adresse email" required name="_username" type="text"
-                   class="form-control">
+            <input type="text" placeholder="Adresse email" required value="{{ username }}" name="_username" id="email"
+                   class="form-control" >
          </div>
 
          <div class="form-group">

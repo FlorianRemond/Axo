@@ -60,9 +60,6 @@ class AdminBlogController extends AbstractController{
             ]);
     }
 
-
-
-
     /**
      * Suppression des articles en BDD
      * @Route("/admin/{id}/delete", name="admin_article_delete")
