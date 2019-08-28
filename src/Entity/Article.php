@@ -42,6 +42,7 @@ class Article
 
     /**
      * @var File | null
+     * @Assert\Image()
      * @Vich\UploadableField(mapping="article_image", fileNameProperty="imageName")
      */
     private $imageFile;

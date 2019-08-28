@@ -1,7 +1,7 @@
 Axocapmailing@gmail.com / Axocap59114
 
 Formulaire changement de mot de passe
-Regex mot de passe
+
 Mailing a revoir
 Message flash sur les pages
 Voir l'upload d'image
