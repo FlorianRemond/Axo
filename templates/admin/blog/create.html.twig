@@ -14,7 +14,8 @@
 
   {{form_row(formArticle.title,{'label':"Titre de l'article",'attr':{'placeholder': "Titre de l'article"}})}}
   {{form_row(formArticle.content,{'label':"Contenu de l'article",'attr':{'placeholder': "Contenu de l'article"}})}}
-  {{form_row(formArticle.image,{'attr':{'placeholder': "URL de l'image"}})}}
+    {#{{form_row(formArticle.image,{'attr':{'placeholder': "URL de l'image"}})}}#}
+  {{form_row(formArticle.imageFile,{'attr':{'placeholder': "Selectionnez une image"}})}}
   {{form_row(formArticle.publishedAt,{'label':"Date de publication souhaitée : "})}}
   {{ form_row(formArticle.isPrivate,{'label':"Diffusion privée ?"}) }}
 

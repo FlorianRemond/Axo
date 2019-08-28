@@ -12,7 +12,7 @@
                 <article>
                     <h2>{{article.title}}</h2>
                       <div class="metadata"> Ecrit le {{ article.createdAt | date('d/m/Y') }} à {{ article.createdAt | date ('H:i')  }}</div>
-                      <div class="content">  <img src="{{article.image}}" alt=""></div>
+                     <img src="{{ vich_uploader_asset(article, 'imageFile') }}" alt="card-img-top" style="width: 30%; height: auto">
                     <br>
         {# On applique des conditions telles que : si utilisateur connecté et que l'article est privé, le contenu s'affiche #}
                     {% if app.user and article.isPrivate %}

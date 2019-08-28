@@ -14,6 +14,7 @@
                 <th>Ecrit le:</th>
                 <th>Contenu</th>
                 <th>Image</th>
+                {#<th>Image Url</th>#}
                 <th>Date publication</th>
                 <th>Diffusion privée</th>
                 <th>Actions</th>
@@ -27,10 +28,11 @@
                 <td>{{ article.title }}</td>
                 <td>{{ article.createdAt | date('Y-M-j') }}</td>
                 <td>{{ article.content }}</td>
-
-                {% for image in article.images %}
+               {# {% for image in article.images %}
                 <td>{{ image.url }}</td>
                 {% endfor %}
+                #}
+                <td><img src="{{ vich_uploader_asset(article, 'imageFile') }}" alt="card-img-top" style="width: 100%; height: auto"></td>
                 <td>{{ article.publishedAt | date('Y-M-j') }}</td>
                 <td>{{ article.isPrivate }}</td>
                 <td>

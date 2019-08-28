@@ -9,4 +9,7 @@ Voir API
 Voir combien de connexion sur le site
 Revoir édition du profil
 
+voir Vich\UploaderBundle\Naming\UniqidNamer pour unique et suppression
+
+
 

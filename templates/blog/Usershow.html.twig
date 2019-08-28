@@ -8,15 +8,15 @@
     <article class="container">
         <h2>{{ article.title }}</h2>
         <br>
+
         <div class="metadata">
             Ecrit le {{ article.createdAt | date ('d/m/Y')}} à {{ article.createdAt | date ('H:i') }}
         </div>
         <br>
-        {% for image in article.images %}
-        <div class="content">
-            <img src="{{image.url}}" alt="">
-        <hr>
-        {% endfor %}
+
+        <img src="{{ vich_uploader_asset(article, 'imageFile') }}" alt="card-img-top" style="width: 50%; height: auto">
+
+        <div>
             {{ article.content | raw }}
         </div>
     </article>

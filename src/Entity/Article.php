@@ -5,11 +5,14 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
+ * @Vich\Uploadable
  */
 class Article
 {
@@ -38,10 +41,17 @@ class Article
     private $content;
 
     /**
+     * @var File | null
+     * @Vich\UploadableField(mapping="article_image", fileNameProperty="imageName")
+     */
+    private $imageFile;
+
+
+    /**
      * @ORM\Column(type="string", length=255)
      *
      */
-    private $image;
+    private $imageName;
 
       /**
      * @ORM\Column(type="datetime")
@@ -99,12 +109,12 @@ class Article
 
     public function getImage(): ?string
     {
-        return $this->image;
+        return $this->imageName;
     }
 
-    public function setImage(string $image): self
+    public function setImage(string $imageName): self
     {
-        $this->image = $image;
+        $this->imageName = $imageName;
 
         return $this;
     }
@@ -122,6 +132,41 @@ class Article
 
         return $this;
     }
+
+    /**
+     * @return File|null
+     */
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param File|null $imageFile
+     */
+    public function setImageFile(?File $imageFile): void
+    {
+        $this->imageFile = $imageFile;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImageName()
+    {
+        return $this->imageName;
+    }
+
+    /**
+     * @param mixed $imageName
+     */
+    public function setImageName($imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+
+
 
     /**
      * @return Collection|Image[]

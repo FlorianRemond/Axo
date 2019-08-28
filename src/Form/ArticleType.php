@@ -18,7 +18,9 @@ class ArticleType extends AbstractType
         $builder
             ->add('title')
             ->add('content')
-            ->add('image',UrlType::class)
+           // ->add('image',UrlType::class)
+            ->add('imageFile', FileType::class,[
+                'required'=>false])
             ->add('publishedAt',DateType::class)
             ->add ('isPrivate')
         ;
