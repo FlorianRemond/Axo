@@ -85,9 +85,9 @@ class SecurityController extends AbstractController
 
     //formulaire de modification du profil
     /**
-     * @Route("/account/profile", name="account_profile")
-     * @Security("is_granted('ROLE_USER')")
-     * @return Response
+     * @Route("/profile", name="security_profile")
+     *
+     *
      */
     public function profile(Request $request, ObjectManager $manager){
         $user = $this->getUser();
@@ -114,7 +114,7 @@ class SecurityController extends AbstractController
 
     /**
      * Permet de modifier le mot de passe
-     * @Route("/account/password-update",name="account_password_update")
+     * @Route("/password-update",name="security_password_update")
      * @Security("is_granted('ROLE_USER')")
      * @return Response
      */
