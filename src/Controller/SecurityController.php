@@ -89,8 +89,7 @@ class SecurityController extends AbstractController
 
     //formulaire de modification du profil
     /**
-     * @Route("/profile", name="security_profile")
-     *
+     * @Route("/profile/change", name="security_profile")
      *
      */
     public function profile(Request $request, ObjectManager $manager){

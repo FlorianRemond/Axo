@@ -5,6 +5,9 @@ namespace App\Controller;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\StatService;
+
+
 
 class AdminDashboardController extends AbstractController
 {
@@ -12,8 +15,10 @@ class AdminDashboardController extends AbstractController
      * @Route("/admin/dashboard", name="admin_dashboard")
      *
      */
-    public function index(ObjectManager $manager)
-    {
+    public function index(ObjectManager $manager,StatService $statService){
+
+        $statService->readStats();
+
         //ici on compte les articles en passant par une reuqte DQL et plutot que d'avoir les résultats sous forme de
         //tableau , la fonction ScalarResult affiche un seul résultat
         $articles = $manager -> createQuery ('SELECT COUNT (a) FROM App\Entity\Article a')->getSingleScalarResult();
@@ -25,4 +30,6 @@ class AdminDashboardController extends AbstractController
         ]);
 
     }
+
+
 }

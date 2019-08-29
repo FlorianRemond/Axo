@@ -5,21 +5,28 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use App\Service\StatService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 use Symfony\Component\HttpFoundation\Request;
 
 class BlogController extends AbstractController
 {
+
+
     //route principale sans adresse
     /**
      * @Route("/",name="home")
      * @Route("/blog",name="blog")
      */
-    public function home(ArticleRepository $repo){
+    public function home(ArticleRepository $repo, StatService $statService){
+
+        $statService->getStats();
+
         $articles = $repo -> findAll();
         return $this -> render('blog/home.html.twig', [
             'controller_name' => 'BlogController',

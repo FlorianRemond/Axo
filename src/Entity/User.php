@@ -45,8 +45,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Regex("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])#",message="Le mot de passe doit contenir au moins une
-     majuscule et un chiffre")
+     * @Assert\Regex("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]{2,})#",message="Le mot de passe doit contenir au moins une
+     majuscule et deux chiffres")
      * @Assert\Length(min="8",max="30",
      *     minMessage="Le mot de passe doit avoir minimum 8 caractères")
      * @Assert\NotBlank(message="Merci de préciser un mot de passe")
