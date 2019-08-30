@@ -1,0 +1,39 @@
+{% extends 'admin/blog/base.html.twig' %}
+
+{% block title %}Administration des utilisateurs  {% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h1 class="my-5">Gestion des utilisateurs </h1>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Utilisateur</th>
+                <th>Société</th>
+                <th>Adresse email</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.username}}</td>
+                    <td>{{ user.society }}</td>
+                    <td>{{ user.email}}</td>
+                   <td>}</td>
+
+                    <td><img src="{{ vich_uploader_asset(article, 'imageFile') }}" alt="card-img-top" style="width: 100%; height: auto"></td>
+                    <td>{{ article.publishedAt | date('Y-M-j') }}</td>
+                    <td>{{ article.isPrivate }}</td>
+                    <td>
+                        <a href="{{ path('admin_article_edit',{'id': article.id}) }}" class="badge badge-primary">Edit</a>
+                        <a href="{{ path('admin_article_delete',{'id':article.id}) }}" class="badge badge-danger">Suppr</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

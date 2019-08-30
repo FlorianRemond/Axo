@@ -39,16 +39,18 @@ class ArticleFixtures extends Fixture
                 ->setCreatedAt(new \DateTime())
                 ->setIsPrivate($isPrivate);
 
-                   /*   for($j =1; $j <=1; $j ++){
+                    for($j =1; $j <=1; $j ++){
                             $image = new Image();
                             $image ->setUrl($faker -> imageUrl())
                                    ->setArt($article)
                                    ->setCaption($faker->sentence());
                             $manager->persist($image);
                         }
-                */
+
             $manager->persist($article);
         }
         $manager->flush();
     }
+
+
 }

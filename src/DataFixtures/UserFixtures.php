@@ -9,7 +9,7 @@ use App\Entity\User;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
-class AppFixtures extends Fixture
+class AdminFixtures extends Fixture
 {
     private $encoder;
     public function __construct(UserPasswordEncoderInterface $encoder){
@@ -29,9 +29,11 @@ class AppFixtures extends Fixture
         $adminUser->setUsername('Florian')
                   ->setEmail('florian@axocap.com')
                   ->setPassword($this->encoder->encodePassword($adminUser,'password'))
-                  ->addUserRole($adminRole)  ;
-        $manager->persist($adminUser);
+                  ->addUserRole($adminRole)
+                  ->setCreatedAt(new \DateTime())
+                  ->setSociety('Axocap');
 
+        $manager->persist($adminUser);
         $manager->flush();
 
     }
