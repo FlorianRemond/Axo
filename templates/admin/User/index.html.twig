@@ -13,23 +13,22 @@
                 <th>Utilisateur</th>
                 <th>Société</th>
                 <th>Adresse email</th>
+                <th>Rôle</th>
+                <th>Inscrit le </th>
             </tr>
             </thead>
 
             <tbody>
             {% for user in users %}
                 <tr>
+                    <td>{{ user.id}}</td>
                     <td>{{ user.username}}</td>
                     <td>{{ user.society }}</td>
                     <td>{{ user.email}}</td>
-                   <td>}</td>
-
-                    <td><img src="{{ vich_uploader_asset(article, 'imageFile') }}" alt="card-img-top" style="width: 100%; height: auto"></td>
-                    <td>{{ article.publishedAt | date('Y-M-j') }}</td>
-                    <td>{{ article.isPrivate }}</td>
+                    <td>{{ user.createdAt | date ('Y-M-j') }}</td>
                     <td>
-                        <a href="{{ path('admin_article_edit',{'id': article.id}) }}" class="badge badge-primary">Edit</a>
-                        <a href="{{ path('admin_article_delete',{'id':article.id}) }}" class="badge badge-danger">Suppr</a>
+                        <a href="#" class="badge badge-primary">Edit</a>
+                        <a href="{{ path('admin_user_delete',{'id':user.id}) }}" class="badge badge-danger">Suppr</a>
                     </td>
                 </tr>
             {% endfor %}

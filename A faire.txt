@@ -7,8 +7,17 @@ Message flash sur les pages
 Voir API
 Voir combien de connexion sur le site
 Revoir édition du profil
-
+Revoir Role = User erreur sur le getTitle
 voir Vich\UploaderBundle\Naming\UniqidNamer pour unique et suppression
 
 
+validation inscription
+Mail de validation de la demande
+Liste d'abonnées
 
+Stat ++ sur connexion
+stat par article et par user
+un editeur pour l'écriture d 'un article
+https://github.com/tchoulom/ViewCounterBundle
+
+swiftmailer : voir les variable dans un ficher text

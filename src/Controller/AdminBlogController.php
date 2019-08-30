@@ -60,19 +60,19 @@ class AdminBlogController extends AbstractController{
             ]);
     }
 
-    /**
-     * Suppression des articles en BDD
-     * @Route("/admin/{id}/delete", name="admin_article_delete")
-     * @param Article $article
-     * @Route("is_granted('ROLE_ADMIN')")
-     * @param ObjectManager $manager
-     * @return Response
-     */
-    public function delete(Article $article, ObjectManager $manager){
-        $manager->remove($article);
-        $manager->flush();
-        $this ->addFlash('success','L\'article a bien été supprimé');
-        return $this ->redirectToRoute('admin_article_index');
+        /**
+         * Suppression des articles en BDD
+         * @Route("/admin/{id}/delete", name="admin_article_delete")
+         * @param Article $article
+         * @Route("is_granted('ROLE_ADMIN')")
+         * @param ObjectManager $manager
+         * @return Response
+         */
+        public function delete(Article $article, ObjectManager $manager){
+            $manager->remove($article);
+            $manager->flush();
+            $this ->addFlash('success','L\'article a bien été supprimé');
+            return $this ->redirectToRoute('admin_article_index');
 
-    }
+        }
 }

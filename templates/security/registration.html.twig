@@ -4,10 +4,11 @@
 <h1>Inscription à l'Axoblog !</h1>
 
     {{ form_start(formUser) }}
-    {{ form_row(formUser.username,{'label':"Nom d'utilisateur",'attr':{'placeholder':"Votre nom d'utilisateur"}} ) }}
-    {{ form_row(formUser.email,{'label':"Adresse Email",'attr':{'placeholder':"Votre adresse mail"}}) }}
-    {{ form_row(formUser.password,{'label':"Mot de passe",'attr':{'placeholder':"Votre mot de passe avec une majuscule et deux chiffre"}} ) }}
-    {{ form_row(formUser.confirm_password,{'label':"Confirmation du mot de passe",'attr':{'placeholder':"Confirmez votre mot de passe"}})  }}
+    {{ form_row(formUser.username,{'label':"Utilisateur :",'attr':{'placeholder':"Vôtre nom d'utilisateur"}} ) }}
+    {{ form_row(formUser.society,{'label':"Société : ",'attr':{'placeholder':"Le nom de vôtre société"}} ) }}
+    {{ form_row(formUser.email,{'label':"Email :",'attr':{'placeholder':"Vôtre adresse mail"}}) }}
+    {{ form_row(formUser.password,{'label':"Mot de passe :",'attr':{'placeholder':"Vôtre mot de passe avec une majuscule et deux chiffre"}} ) }}
+    {{ form_row(formUser.confirm_password,{'label':"Confirmation: ",'attr':{'placeholder':"Confirmez vôtre mot de passe"}})  }}
     <button type="submit" class="btn btn-success">Inscription</button>
     {{ form_end(formUser) }}
 {% endblock %}

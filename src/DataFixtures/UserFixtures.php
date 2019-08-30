@@ -4,12 +4,12 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use App\Entity\Role;
 use App\Entity\User;
+use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
-class AdminFixtures extends Fixture
+class UserFixtures extends Fixture
 {
     private $encoder;
     public function __construct(UserPasswordEncoderInterface $encoder){
@@ -19,21 +19,21 @@ class AdminFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
 
-        // $product = new Product();
-        // $manager->persist($product);
-        $adminRole = new Role();
-        $adminRole->setTitle('ROLE_ADMIN');
-        $manager->persist($adminRole);
+        $faker = Factory::create('fr-FR');
+        for($i=0; $i <=5; $i++) {
+            $username=$faker->name();
+            $email = $faker->safeEmail;
+            $society =$faker ->company;
 
-        $adminUser = new User();
-        $adminUser->setUsername('Florian')
-                  ->setEmail('florian@axocap.com')
-                  ->setPassword($this->encoder->encodePassword($adminUser,'password'))
-                  ->addUserRole($adminRole)
-                  ->setCreatedAt(new \DateTime())
-                  ->setSociety('Axocap');
+            $user = new User();
+            $user->setUsername($username)
+                ->setPassword($this->encoder->encodePassword($user,'password'))
+                ->setEmail($email)
+                ->setSociety($society)
+                ->setCreatedAt(new \DateTime());
 
-        $manager->persist($adminUser);
+            $manager->persist($user);
+        }
         $manager->flush();
 
     }
