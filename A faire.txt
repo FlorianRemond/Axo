@@ -13,11 +13,22 @@ voir Vich\UploaderBundle\Naming\UniqidNamer pour unique et suppression
 
 validation inscription
 Mail de validation de la demande
-Liste d'abonnées
+
 
 Stat ++ sur connexion
-stat par article et par user
+stat par article et par user https://github.com/tchoulom/ViewCounterBundle
+
 un editeur pour l'écriture d 'un article
-https://github.com/tchoulom/ViewCounterBundle
+https://openclassrooms.com/forum/sujet/bundle-symfony-3-editeur-de-texte-wysiwyg-froala
 
 swiftmailer : voir les variable dans un ficher text
+
+
+bundle :
+swiftmailier
+twig
+vich uplaoder
+ckeditor https://ckeditor.com/docs/ckeditor4/latest/examples/uicolor.html
+
+
+https://informatux.com/news/category/2/php

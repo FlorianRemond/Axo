@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 
-use App\Entity\Article;
 use App\Entity\User;
-use App\Form\ArticleType;
 use App\Form\RegistrationType;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -62,7 +60,7 @@ class AdminUserController extends AbstractController
 
         if ($formUser->isSubmitted() && $formUser->isValid()){
             if (!$user->getId()) {
-                $user->setCreatedAt(new \DateTime());
+                $user->setCreatedAt(new\DateTime());
 
             }
             $hash =$encoder ->encodePassword($user,$user->getPassword());
@@ -71,7 +69,7 @@ class AdminUserController extends AbstractController
             $manager->flush();
 
 
-            return $this -> redirectToRoute('admin/user_index');
+            return $this -> redirectToRoute('admin_user_index');
         }
         //Vérification des données passées pour le User
         //dump($user);

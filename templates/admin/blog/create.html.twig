@@ -1,7 +1,6 @@
 {% extends 'admin/blog/base.html.twig' %}
 
 
-
 {% block body %}
     {% if editMode %}
     <h1>Modification de l'article</h1>
@@ -11,6 +10,13 @@
     {% endif %}
 
     {{ form_start(formArticle) }}
+
+{# templates / new_post.html.twig #}
+{# Javascript Block #}
+<script src = "{{asset ('assets / javascript / ckeditor / adapters / jquery.js')}}" type = "text / javascript" > </script>
+<script src = "{{asset ('assets / javascript / ckeditor / ckeditor.js')}}" type = "text / javascript"> </script>
+
+
 
   {{form_row(formArticle.title,{'label':"Titre de l'article",'attr':{'placeholder': "Titre de l'article"}})}}
   {{form_row(formArticle.content,{'label':"Contenu de l'article",'attr':{'placeholder': "Contenu de l'article"}})}}
@@ -28,6 +34,8 @@
         {% endif %}
     </button>
     {{ form_end (formArticle) }}
+
+
 
 {% endblock %}
 

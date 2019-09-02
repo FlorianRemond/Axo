@@ -19,7 +19,6 @@ class RegistrationType extends AbstractType
             ->add('society')
             ->add('password',         PasswordType::class)
             ->add('confirm_password', PasswordType::class)
-
         ;
     }
 

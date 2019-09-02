@@ -11,7 +11,7 @@
         {% if article.publishedAt <= date() %}
             <section class="articles">
                 <article>
-                    <h2>{{article.title}}</h2>
+                    <h2>{{article.title | raw}}</h2>
                       <div class="metadata"> Ecrit le {{ article.createdAt | date('d/m/Y') }} à {{ article.createdAt | date ('H:i')  }}</div>
                      <img src="{{ vich_uploader_asset(article, 'imageFile') }}" alt="card-img-top" style="width: 30%; height: auto">
                     <br>
