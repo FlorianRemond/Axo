@@ -12,7 +12,8 @@ voir Vich\UploaderBundle\Naming\UniqidNamer pour unique et suppression
 
 
 validation inscription
-Mail de validation de la demande
+Mail de validation de la demande https://openclassrooms.com/forum/sujet/symfony-4-confirmation-dinscription
+https://www.youtube.com/watch?v=4G_EJZFmoa4
 
 
 Stat ++ sur connexion

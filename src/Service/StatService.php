@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use Twig\TwigFilter;
+
 class StatService
 {
     public function getStats()
@@ -38,5 +40,8 @@ class StatService
        $contents=fread($handle,filesize($filename));
        fclose($handle);
        echo $contents;
+
+
+
     }
 }
