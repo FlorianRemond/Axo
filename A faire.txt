@@ -22,7 +22,7 @@ Mail de validation de la demande https://openclassrooms.com/forum/sujet/symfony-
 https://www.youtube.com/watch?v=4G_EJZFmoa4
 
 
-Stat ++ sur connexion
+Stat ++ sur connexion :connected
 stat par article et par user https://github.com/tchoulom/ViewCounterBundle
 
 

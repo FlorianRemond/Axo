@@ -78,6 +78,11 @@ class User implements UserInterface
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $connectedAt;
+
 
     public function __construct()
     {
@@ -196,6 +201,18 @@ class User implements UserInterface
     public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getConnectedAt(): ?\DateTimeInterface
+    {
+        return $this->connectedAt;
+    }
+
+    public function setConnectedAt(?\DateTimeInterface $connectedAt): self
+    {
+        $this->connectedAt = $connectedAt;
 
         return $this;
     }

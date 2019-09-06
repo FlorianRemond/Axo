@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Repository\UserRepository;
 use Faker\Provider\DateTime;
 use phpDocumentor\Reflection\Types\String_;
 use Symfony\Component\DependencyInjection\Tests\Compiler\D;
@@ -46,5 +47,9 @@ class StatService
        $contents=fread($handle,filesize($filename));
        fclose($handle);
        echo $contents;
+    }
+
+    public function getConnect (){
+
     }
 }

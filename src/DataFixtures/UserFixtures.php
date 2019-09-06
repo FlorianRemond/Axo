@@ -21,16 +21,19 @@ class UserFixtures extends Fixture
 
         $faker = Factory::create('fr-FR');
         for($i=0; $i <=5; $i++) {
+
             $username=$faker->name();
             $email = $faker->safeEmail;
             $society =$faker ->company;
+            $connectedAt = $faker->dateTime('now');
 
             $user = new User();
             $user->setUsername($username)
                 ->setPassword($this->encoder->encodePassword($user,'password'))
                 ->setEmail($email)
                 ->setSociety($society)
-                ->setCreatedAt(new \DateTime());
+                ->setCreatedAt(new \DateTime())
+                ->setConnectedAt($connectedAt);
 
             $manager->persist($user);
         }

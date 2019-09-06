@@ -21,8 +21,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-
-
     //formulaire d'inscription
     /**
      * @Route("/inscription", name="security_registration")
@@ -90,7 +88,7 @@ class SecurityController extends AbstractController
     //formulaire de modification du profil
     /**
      * @Route("/profile/change", name="security_profile")
-     *
+     *@Security("is_granted('ROLE_USER')")
      */
     public function profile(Request $request, ObjectManager $manager){
         $user = $this->getUser();
@@ -155,15 +153,9 @@ class SecurityController extends AbstractController
                 }
 
             }
-
-
             return $this->render('security/password.html.twig',[
             'formPassword'=> $formPassword->createView()
                 ]);
         }
-
-
-
-
 
 }
