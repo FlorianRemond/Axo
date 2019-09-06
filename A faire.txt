@@ -9,6 +9,12 @@ Voir combien de connexion sur le site
 Revoir édition du profil
 Revoir Role = User erreur sur le getTitle
 voir Vich\UploaderBundle\Naming\UniqidNamer pour unique et suppression
+raz des stats de visiteurs
+
+Admin: voir FosUSer
+ envoi de mail des connexion au admin/login
+ si pas de connection pendant 30 jours envoi de mail
+ enregistrer l'ip ou l'adresse mac et mail si inconuu
 
 
 validation inscription
@@ -19,8 +25,7 @@ https://www.youtube.com/watch?v=4G_EJZFmoa4
 Stat ++ sur connexion
 stat par article et par user https://github.com/tchoulom/ViewCounterBundle
 
-un editeur pour l'écriture d 'un article
-https://openclassrooms.com/forum/sujet/bundle-symfony-3-editeur-de-texte-wysiwyg-froala
+
 
 swiftmailer : voir les variable dans un ficher text
 
@@ -30,6 +35,5 @@ swiftmailier
 twig
 vich uplaoder
 ckeditor https://ckeditor.com/docs/ckeditor4/latest/examples/uicolor.html
-
 
 https://informatux.com/news/category/2/php

@@ -17,8 +17,7 @@ class AdminDashboardController extends AbstractController
      */
     public function index(ObjectManager $manager,StatService $statService){
 
-        $statService->readStats();
-
+       
         //ici on compte les articles en passant par une reuqte DQL et plutot que d'avoir les résultats sous forme de
         //tableau , la fonction ScalarResult affiche un seul résultat
         $articles = $manager -> createQuery ('SELECT COUNT (a) FROM App\Entity\Article a')->getSingleScalarResult();
