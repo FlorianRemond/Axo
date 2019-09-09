@@ -50,7 +50,6 @@ class AdminBlogController extends AbstractController{
                 $manager->persist($article);
                 $manager->flush();
 
-
                 $this->addFlash('success', 'L\' article a bien été crée');
                 return $this->redirectToRoute('admin_mail');
             }

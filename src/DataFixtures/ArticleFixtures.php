@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ArticleFixtures extends Fixture
 {
-
-
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr-FR');

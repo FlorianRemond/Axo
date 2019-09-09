@@ -28,7 +28,7 @@ class UserRepository extends ServiceEntityRepository
 
     public function findConnectUsers(){
         return $this->createQueryBuilder('u')
-            ->select('u.connectAt')
+            ->select('u.connectedAt')
             ->getQuery()
             ->getResult();
     }

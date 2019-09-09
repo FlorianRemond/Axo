@@ -2,11 +2,8 @@
 
 namespace App\Service;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use App\Repository\UserRepository;
-use Faker\Provider\DateTime;
-use phpDocumentor\Reflection\Types\String_;
-use Symfony\Component\DependencyInjection\Tests\Compiler\D;
-use Twig\TwigFilter;
 
 class StatService
 {
@@ -36,12 +33,9 @@ class StatService
         }
         fclose($file);
         fclose($ip);
-
-
     }
 
         public function readStats(){
-
        $filename="C:\Blog\Axo\public\counter.txt";
        $handle=fopen($filename,'r');
        $contents=fread($handle,filesize($filename));
@@ -49,7 +43,5 @@ class StatService
        echo $contents;
     }
 
-    public function getConnect (){
 
-    }
 }
