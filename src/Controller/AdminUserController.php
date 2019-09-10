@@ -61,6 +61,7 @@ class AdminUserController extends AbstractController
         if ($formUser->isSubmitted() && $formUser->isValid()){
             if (!$user->getId()) {
                 $user->setCreatedAt(new\DateTime());
+                $user->setConnectedAt(new\DateTime());
 
             }
             $hash =$encoder ->encodePassword($user,$user->getPassword());

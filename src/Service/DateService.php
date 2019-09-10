@@ -6,9 +6,10 @@ class DateService{
     public function GetDate(){
         //Récupération de la date du jour
         $dateNow1 = new \DateTime('now');
-       //  $dateNow1= new \DateTime('tomorrow');
+        // $dateNow1= new \DateTime('tomorrow');
         //Mise au format permettant la manipulation
         $dateNow = $dateNow1->format('Y-m-d');
+
         //ajout de la date dans un fichier
         $date = fopen('date.txt', 'c+');
         fwrite($date, $dateNow);
@@ -26,16 +27,16 @@ class DateService{
 
         //comparaison date du jour et date du fichier, et remise à zéro du compteur si différente
         if ($dateCompteur != $dateJour) {
-
+            echo'diff';
             $fileCount= "C:\Blog\Axo\public\counter.txt";
-            $fileCount = fopen($fileCount, 'c+');
-            fwrite($fileCount, 0);
-            fclose($fileCount);
+            $handleCount = fopen($fileCount, 'w+');
+            fwrite($handleCount, 0);
+            fclose($handleCount);
 
-            $fileDate="C:\Blog\Axo\public\last_ip.txt";
-            $fileDate =fopen($fileDate, 'c+');
-            fwrite($fileDate,0);
-            fclose($fileDate);
+            $fileIp="C:\Blog\Axo\public\last_ip.txt";
+            $handleIp =fopen($fileIp, 'w+');
+            fwrite($handleIp,0);
+            fclose($handleIp);
         }
     }
 

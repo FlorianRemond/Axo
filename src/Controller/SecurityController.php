@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\PasswordUpdate;
 use App\Form\AccountType;
+use App\Form\LogType;
 use App\Form\PasswordUpdateType;
 use App\Form\RegistrationType;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -58,25 +59,31 @@ class SecurityController extends AbstractController
     /**
      * @Route("/connexion", name ="security_login")
      */
-    public function login(AuthenticationUtils $utils){
+    public function login(AuthenticationUtils $utils, Request $request, ObjectManager $manager){
 
         //recupérer les erreurs d'authentification
         $error = $utils->getLastAuthenticationError();
         $username = $utils -> getLastUsername();
+
+        $user =$this->getUser();
+        $user-> setConnectedAt(new \DateTime());
+        $manager->persist($user);
+        $manager->flush();
 
         //dump($error);
         return $this -> render('security/login.html.twig',[
             //on passe a twig une variable qui récupère l'état de la variable $error
             'hasError' => $error !==null,
            //on récupère le nom d'utilisateur renseigné précédement et on le passe à twig
-            'username'=> $username
-            ]);
+            'username'=> $username,
+
+        ]);
+
     }
 
     //Permet de se déconnecter
     /**
      * @Route ("/deconnexion", name="security_logout")
-     *
      */
     public function logout (){
         // Route qui mène vers rien afin de sortir du site

@@ -18,10 +18,8 @@ class AdminDashboardController extends AbstractController
     public function index(ObjectManager $manager,StatService $statService, UserRepository $userRepository){
 
 
-        $statService->readStats();
-
-        $usersCo = $userRepository->findConnectUsers();
-        dump($usersCo);
+       // $statService->readStats();
+       //$statService->getConnexion();
 
 
         //ici on compte les articles en passant par une requete DQL et plutot que d'avoir les résultats sous forme de

@@ -17,8 +17,6 @@ class StatService
 
         $file=fopen('counter.txt', 'c+');
         $count=intval(fgets($file));
-
-
         //si l'ip du dernier visiteur est différent on incrémente de 1
         if($_SERVER['REMOTE_ADDR'] !=$check){
             fclose($ip);
@@ -41,6 +39,21 @@ class StatService
        $contents=fread($handle,filesize($filename));
        fclose($handle);
        echo $contents;
+    }
+
+    public function getConnexion(ObjectManager $manager){
+        $usersCo = $manager -> createQuery ('SELECT u.connectedAt FROM App\Entity\User u')->getResult();
+        $cpt=0;
+        foreach ($usersCo as $dateConnexion) {
+            $dateCo = $dateConnexion ['connectedAt']->format('Y-m-d');
+            $dateAvt = new \DateTime();
+            $dateNow = $dateAvt->format('Y-m-d');
+            if($dateCo==$dateNow){
+               $cpt ++;
+            }
+        }
+
+
     }
 
 

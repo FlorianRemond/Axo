@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\Service\StatService;
+use Doctrine\Common\Persistence\ObjectManager;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -23,6 +24,7 @@ class StatExtension extends AbstractExtension
     {
         return [
             new TwigFunction('StatsRead', [$this, 'readStats']),
+            new TwigFunction('ConnexionGet', [$this, 'getConnexion']),
         ];
     }
 
@@ -31,4 +33,11 @@ class StatExtension extends AbstractExtension
         $statService= New StatService();
         $statService->readStats();
     }
+
+    public function getConnexion(ObjectManager $manager)
+    {
+        $statService = New StatService();
+        $statService->getConnexion($manager);
+    }
 }
+
