@@ -28,6 +28,7 @@ class BlogController extends AbstractController
     public function home(ArticleRepository $repo, StatService $statService){
 
         $statService->getStats();
+
         $dateService=new DateService();
         $dateService->GetDate();
 

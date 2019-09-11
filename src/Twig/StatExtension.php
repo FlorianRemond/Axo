@@ -2,8 +2,9 @@
 
 namespace App\Twig;
 
+
+use App\Service\DateConnexionService;
 use App\Service\StatService;
-use Doctrine\Common\Persistence\ObjectManager;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -23,8 +24,8 @@ class StatExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('StatsRead', [$this, 'readStats']),
-            new TwigFunction('ConnexionGet', [$this, 'getConnexion']),
+            new TwigFunction('nbrStats', [$this, 'readStats']),
+            new TwigFunction('nbrConnexion', [$this, 'getAllDateConnexion']),
         ];
     }
 
@@ -34,10 +35,11 @@ class StatExtension extends AbstractExtension
         $statService->readStats();
     }
 
-    public function getConnexion(ObjectManager $manager)
-    {
-        $statService = New StatService();
-        $statService->getConnexion($manager);
+    public function getAllDateConnexion(){
+        $dateConnexionService= New DateConnexionService();
+        $dateConnexionService->getDateConnexion();
     }
+
+
 }
 

@@ -4,12 +4,15 @@ namespace App\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+
 
 class StatService
 {
+
     public function getStats()
     {
-
         $ip=fopen('last_ip.txt', 'c+');
         $check=fgets($ip);
 
@@ -37,21 +40,6 @@ class StatService
        $contents=fread($handle,filesize($filename));
        fclose($handle);
        echo $contents;
-    }
-
-    public function getConnexion(ObjectManager $manager){
-        $usersCo = $manager -> createQuery ('SELECT u.connectedAt FROM App\Entity\User u')->getResult();
-        $cpt=0;
-        foreach ($usersCo as $dateConnexion) {
-            $dateCo = $dateConnexion ['connectedAt']->format('Y-m-d');
-            $dateAvt = new \DateTime();
-            $dateNow = $dateAvt->format('Y-m-d');
-            if($dateCo==$dateNow){
-               $cpt ++;
-            }
-        }
-
-
     }
 
 
