@@ -8,6 +8,7 @@ use App\Form\LogType;
 use App\Form\PasswordUpdateType;
 use App\Form\RegistrationType;
 use Doctrine\Common\Persistence\ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,18 +59,23 @@ class SecurityController extends AbstractController
     //formulaire de connexion
     /**
      * @Route("/connexion", name ="security_login")
+     *
      */
-    public function login(AuthenticationUtils $utils, Request $request, ObjectManager $manager){
+    public function login(AuthenticationUtils $utils, User $user, ObjectManager $manager){
 
         //recupérer les erreurs d'authentification
         $error = $utils->getLastAuthenticationError();
         $username = $utils -> getLastUsername();
+/*
 
-        $user =$this->getUser();
-        $user-> setConnectedAt(new \DateTime());
-        $manager->persist($user);
-        $manager->flush();
+        if ($user){
+            $user =$this->getUser();
+            $user-> setConnectedAt(new \DateTime());
+            $manager->persist($user);
+            $manager->flush();
+        }
 
+*/
         //dump($error);
         return $this -> render('security/login.html.twig',[
             //on passe a twig une variable qui récupère l'état de la variable $error

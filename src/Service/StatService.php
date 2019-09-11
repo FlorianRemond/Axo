@@ -9,8 +9,6 @@ class StatService
 {
     public function getStats()
     {
-        $dateService=new DateService();
-        $dateService->GetDate();
 
         $ip=fopen('last_ip.txt', 'c+');
         $check=fgets($ip);

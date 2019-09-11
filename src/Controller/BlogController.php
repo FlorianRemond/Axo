@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\User;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use App\Service\DateService;
 use App\Service\StatService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -26,6 +28,9 @@ class BlogController extends AbstractController
     public function home(ArticleRepository $repo, StatService $statService){
 
         $statService->getStats();
+        $dateService=new DateService();
+        $dateService->GetDate();
+
 
         $articles = $repo -> findAll();
         return $this -> render('blog/home.html.twig', [

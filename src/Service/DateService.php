@@ -5,8 +5,8 @@ namespace App\Service;
 class DateService{
     public function GetDate(){
         //Récupération de la date du jour
-        $dateNow1 = new \DateTime('now');
-        // $dateNow1= new \DateTime('tomorrow');
+        //$dateNow1 = new \DateTime('now');
+         $dateNow1= new \DateTime('tomorrow');
         //Mise au format permettant la manipulation
         $dateNow = $dateNow1->format('Y-m-d');
 
@@ -33,10 +33,6 @@ class DateService{
             fwrite($handleCount, 0);
             fclose($handleCount);
 
-            $fileIp="C:\Blog\Axo\public\last_ip.txt";
-            $handleIp =fopen($fileIp, 'w+');
-            fwrite($handleIp,0);
-            fclose($handleIp);
         }
     }
 
