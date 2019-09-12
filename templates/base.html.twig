@@ -44,14 +44,7 @@
                             <a href="{{ path ('security_profile') }}" class="nav-link">
                                 Profil
                             </a>
-
                         {% endif %}
-
-                        {#
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{path('blog_create')}}">Créer un article  </a>
-                        </li>
-                        #}
                     </ul>
                 </div>
             </nav>
@@ -63,7 +56,6 @@
                 {% endfor %}
                 {% block body %} {% endblock %}
             </div>
-
         {% block javascripts %}{% endblock %}
     </body>
 </html>

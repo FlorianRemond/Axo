@@ -35,11 +35,5 @@ class StatExtension extends AbstractExtension
         $statService->readStats();
     }
 
-    public function getAllDateConnexion(){
-        $dateConnexionService= New DateConnexionService();
-        $dateConnexionService->getDateConnexion();
-    }
-
-
-}
+ }
 
