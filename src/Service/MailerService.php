@@ -1,37 +1,39 @@
 <?php
-
-
 namespace App\Service;
-
-use Symfony\Component\Templating\EngineInterface;
-use Twig\Environment;
-
-class Mailer
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+class MailerService extends AbstractController
 {
-    private $engine;
+    /**
+     * @var \Swift_Mailer
+     */
     private $mailer;
 
-    public function __construct(\Swift_Mailer $mailer, Environment $engine)
+    public function __construct(\Swift_Mailer $mailer)
     {
-        $this->engine = $engine;
         $this->mailer = $mailer;
     }
 
-    public function sendMessage($from, $to, $subject, $body, $attachement = null)
+    /**
+     * @param $token
+     * @param $username
+     * @param $template
+     * @param $to
+     */
+    public function sendToken($token, $to, $username, $template)
     {
-        $mail = (new \Swift_Message($subject))
-            ->setFrom($from)
+        $message = (new \Swift_Message('Mail de confirmation'))
+            ->setFrom('axocapmailing@gmail.com')
             ->setTo($to)
-            ->setSubject($subject)
-            ->setBody($body)
-            ->setReplyTo($from)
-            ->setContentType('text/html');
-
-        $this->mailer->send($mail);
-    }
-
-    public function createBodyMail($view, array $parameters)
-    {
-        return $this->engine->render($view, $parameters);
+            ->setBody(
+                $this->renderView(
+                    'emails/' . $template,
+                    [
+                        'token' => $token,
+                        'username' => $username
+                    ]
+                ),
+                'text/html'
+            );
+        $this->mailer->send($message);
     }
 }

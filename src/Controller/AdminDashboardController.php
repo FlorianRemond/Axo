@@ -30,7 +30,7 @@ class AdminDashboardController extends AbstractController
             $dateCo = $dateConnexion['connectedAt']->format('Y-m-d');
             if ($dateCo ==$dateNow){
                 $count ++;
-                echo $count;
+               
             }
         }
         return $this -> render ('admin\dashboard\index.html.twig', [

@@ -1,1 +1,16 @@
-envoi
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription au site AxoBlog</title>
+</head>
+<body>
+<p>
+    Bonjour, <br>
+    Cliquez sur ce lien pour finaliser votre inscription
+    {# pour que le lien fonctionne, il est indispensable que le lien soit absolu. #}
+    <a href="{{absolute_url(path('', {'id': user.id, 'token': user.token}))}}">Valider l'inscription</a>
+</p>
+</body>
+</html>

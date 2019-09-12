@@ -26,7 +26,7 @@ class DateService{
         $dateJour = $dateJourCompare->format('Y-m-d');
 
         //comparaison date du jour et date du fichier, et remise à zéro du compteur si différente
-        if ($dateCompteur != $dateJour) {
+        if ($dateCompteur !== $dateJour) {
 
             $fileCount= "C:\Blog\Axo\public\counter.txt";
             $handleCount = fopen($fileCount, 'w+');

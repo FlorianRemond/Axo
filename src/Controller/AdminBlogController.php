@@ -23,7 +23,7 @@ class AdminBlogController extends AbstractController{
      */
     public function index(ArticleRepository $repo, UserRepository $userRepo)
     {
-        return $this->render('admin/blog/index1.html.twig', [
+        return $this->render('admin/blog/index.html.twig', [
             'articles' => $repo->findAll()
         ]);
     }
