@@ -28,7 +28,7 @@ class AdminMailController extends AbstractController
         $message = (new \Swift_Message('Message informatif en provenance d\'Axocap'))
             ->setFrom('AxocapMailing@axocap.com')
             ->setTo($destinataires)
-            ->setBody('Un nouvel article d\'Axocap est paru, il n\'attend que vôtre lecture ! ');
+            ->setBody('Un nouvel article d\'Axocap est paru, il n\'attend que votre lecture ! ');
         $mailer->send($message);
         return $this->redirectToRoute('admin_article_index');
 

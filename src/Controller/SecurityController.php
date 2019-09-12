@@ -7,9 +7,11 @@ use App\Form\AccountType;
 use App\Form\LogType;
 use App\Form\PasswordUpdateType;
 use App\Form\RegistrationType;
+use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +40,8 @@ class SecurityController extends AbstractController
         if ($formUser->isSubmitted() && $formUser->isValid()){
             $hash =$encoder ->encodePassword($user,$user->getPassword());
             $user->setPassword($hash);
+            $user->setCreatedAt(new\DateTime());
+            $user->setConnectedAt(new \DateTime());
             $manager->persist($user );
             $manager->flush();
             $this->addFlash(
@@ -45,10 +49,10 @@ class SecurityController extends AbstractController
                 'Merci de vous être enregistré !'
             );
 
-            return $this -> redirectToRoute('security_login');
+           return $this -> redirectToRoute('security_login');
         }
         //Vérification des données passées pour le User
-        //dump($user);
+
         return $this-> render('security/registration.html.twig',[
         'formUser' => $formUser->createView()
         ]);
@@ -61,30 +65,17 @@ class SecurityController extends AbstractController
      * @Route("/connexion", name ="security_login")
      *
      */
-    public function login(AuthenticationUtils $utils, User $user, ObjectManager $manager){
-
+    public function login(AuthenticationUtils $utils){
         //recupérer les erreurs d'authentification
         $error = $utils->getLastAuthenticationError();
         $username = $utils -> getLastUsername();
-/*
 
-        if ($user){
-            $user =$this->getUser();
-            $user-> setConnectedAt(new \DateTime());
-            $manager->persist($user);
-            $manager->flush();
-        }
-
-*/
-        //dump($error);
         return $this -> render('security/login.html.twig',[
             //on passe a twig une variable qui récupère l'état de la variable $error
             'hasError' => $error !==null,
            //on récupère le nom d'utilisateur renseigné précédement et on le passe à twig
             'username'=> $username,
-
         ]);
-
     }
 
     //Permet de se déconnecter
@@ -97,49 +88,16 @@ class SecurityController extends AbstractController
 
 
 
-
-    //formulaire de modification du profil
-    /**
-     * @Route("/profile/change", name="security_profile")
-     *@Security("is_granted('ROLE_USER')")
-     */
-    public function profile(Request $request, ObjectManager $manager){
-        $user = $this->getUser();
-
-        $formProfile = $this->createForm(AccountType::class,$user);
-
-        $formProfile->handleRequest($request);
-        if($formProfile ->isSubmitted() && $formProfile->isValid()){
-
-            $manager ->persist($user);
-            $manager ->flush();
-
-            $this->addFlash(
-                'sucess',
-                'Le profil a été modifié avec succès ! '
-            );
-        }
-
-        return $this ->render('security/profile.html.twig',[
-            'formProfile' => $formProfile->createView(),
-        ]);
-    }
-
-
     /**
      * Permet de modifier le mot de passe
      * @Route("/password-update",name="security_password_update")
      * @Security("is_granted('ROLE_USER')")
      * @return Response
      */
-
         public function UpdatePassword (Request $request, UserPasswordEncoderInterface $encoder, ObjectManager $manager){
             $passwordUpdate = new PasswordUpdate();
-
             $user = $this ->getUser();
-
             $formPassword =$this ->createForm(PasswordUpdateType::class,$passwordUpdate);
-
             $formPassword->handleRequest($request);
 
             if($formPassword->isSubmitted() && $formPassword->isValid()){
@@ -151,9 +109,7 @@ class SecurityController extends AbstractController
                 }else{
                     $newPassword = $passwordUpdate->getNewPassword();
                     $hash=$encoder->encodePassword($user, $newPassword);
-
                     $user->setPassword($hash);
-
                     $manager->persist($user);
                     $manager->flush();
 
@@ -161,13 +117,11 @@ class SecurityController extends AbstractController
                         'success',
                         'Votre mot de passe a bien été modifié !'
                     );
-
                     return $this->redirectToRoute('home');
                 }
-
             }
-            return $this->render('security/password.html.twig',[
-            'formPassword'=> $formPassword->createView()
+                    return $this->render('security/password.html.twig',[
+                    'formPassword'=> $formPassword->createView()
                 ]);
         }
 
