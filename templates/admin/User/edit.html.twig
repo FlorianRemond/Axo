@@ -1,14 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body  %}
-    <h1>Inscription à l'Axoblog !</h1>
+    <h1>Modification d'un utlisateur !</h1>
 
     {{ form_start(formUser) }}
     {{ form_row(formUser.username,{'label':"Utilisateur :",'attr':{'placeholder':"Votre nom d'utilisateur"}} ) }}
     {{ form_row(formUser.society,{'label':"Société : ",'attr':{'placeholder':"Le nom de votre société"}} ) }}
     {{ form_row(formUser.email,{'label':"Email :",'attr':{'placeholder':"Votre adresse mail"}}) }}
-    {{ form_row(formUser.password,{'label':"Mot de passe :",'attr':{'placeholder':"Votre mot de passe avec une majuscule et deux chiffre"}} ) }}
-    {{ form_row(formUser.confirm_password,{'label':"Confirmation: ",'attr':{'placeholder':"Confirmez votre mot de passe"}})  }}
-    <button type="submit" class="btn btn-success">Inscription</button>
+
+    <button type="submit" class="btn btn-success">Valider</button>
     {{ form_end(formUser) }}
 {% endblock %}

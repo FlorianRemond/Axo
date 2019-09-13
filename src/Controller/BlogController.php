@@ -25,13 +25,10 @@ class BlogController extends AbstractController
      * @Route("/",name="home")
      * @Route("/blog",name="blog")
      */
-    public function home(ArticleRepository $repo, StatService $statService){
+    public function home(ArticleRepository $repo, StatService $statService, DateService $dateService){
+
 
         $statService->getStats();
-
-        $dateService=new DateService();
-        $dateService->GetDate();
-
 
         $articles = $repo -> findAll();
         return $this -> render('blog/home.html.twig', [

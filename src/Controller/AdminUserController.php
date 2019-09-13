@@ -4,10 +4,13 @@ namespace App\Controller;
 
 
 use App\Entity\User;
+use App\Form\EditType;
 use App\Form\RegistrationType;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,10 +22,12 @@ class AdminUserController extends AbstractController
      * @Route("/admin/user", name="admin_user_index")
      * @Route("is_granted('ROLE_ADMIN')")
      *@
+     * @param UserRepository $repo
+     * @return Response
      */
     public function index(UserRepository $repo){
 
-        return $this->render('admin/user/index1.html.twig', [
+        return $this->render('admin/user/index.html.twig', [
           'users'=> $repo ->findAll()
         ]);
     }
@@ -44,8 +49,13 @@ class AdminUserController extends AbstractController
 
     /**
      * @Route("/admin/user/create", name="admin_user_create")
-     * @Route("/admin/user/{id}/edit", name="admin_user_edit")
      * @Route("is_granted('ROLE_ADMIN')")
+     * @param User|null $user
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @param UserPasswordEncoderInterface $encoder
+     * @return RedirectResponse|Response
+     * @throws Exception
      */
     public function create (User $user=null, Request $request, ObjectManager $manager,
                             UserPasswordEncoderInterface $encoder){
@@ -54,7 +64,6 @@ class AdminUserController extends AbstractController
             $user=new User();
         }
         $formUser=$this->createForm(RegistrationType::class, $user);
-
         //analyse de la requete passée
         $formUser->handleRequest($request);
 
@@ -78,5 +87,37 @@ class AdminUserController extends AbstractController
             'formUser' => $formUser->createView()
         ]);
     }
+
+
+    /**
+     * @Route("/admin/user/{id}/edit", name="admin_user_edit")
+     * @Route("is_granted('ROLE_ADMIN')")
+     * @param User $user
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @return RedirectResponse|Response
+     * @throws Exception
+     */
+    public function edit(User $user,Request $request,ObjectManager $manager){
+
+        $formEditUser=$this->createForm(EditType::class, $user);
+
+        //analyse de la requete passée
+        $formEditUser->handleRequest($request);
+
+        if ($formEditUser->isSubmitted() && $formEditUser->isValid()){
+
+            $manager->persist($user );
+            $manager->flush();
+
+            return $this -> redirectToRoute('admin_user_index');
+        }
+        //Vérification des données passées pour le User
+        //dump($user);
+        return $this-> render('admin/user/edit.html.twig',[
+            'formUser' => $formEditUser->createView()
+        ]);
+    }
+
 
 }

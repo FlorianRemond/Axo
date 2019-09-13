@@ -6,18 +6,18 @@
 
 {% block body %}
     <article class="container">
-        <h2>{{ article.title |raw }}</h2>
+        <h2>{{article.title|raw}}</h2>
         <br>
 
         <div class="metadata">
-            Ecrit le {{ article.createdAt | date ('d/m/Y')}} à {{ article.createdAt | date ('H:i') }}
+            Ecrit le {{ article.createdAt | date ('d/m/Y')}} à {{ article.createdAt|date ('H:i') }}
         </div>
         <br>
 
         <img src="{{ vich_uploader_asset(article, 'imageFile') }}" alt="card-img-top" style="width: 50%; height: auto">
 
         <div>
-            {{ article.content | raw }}
+            {{article.content|raw}}
         </div>
     </article>
 {% endblock %}
