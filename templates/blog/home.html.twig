@@ -30,7 +30,7 @@
          ne s'affiche pas et demande au User de s'identifier #}
                     {% if article.isPrivate and not app.user  %}
                         <div>
-                            {{ article.content|raw| truncate(200)}}
+                            {{ article.content|truncate(100)|raw}}
                         </div>
                         <br>
                         <div> Merci de vous connecter pour lire la suite.</div>
@@ -39,7 +39,7 @@
         {# Ici on affiche le contenu de l'article dans le cas ou celui est public, sans prise en compte de l'état du User#}
                     {% if article.isPrivate == false %}a
                     <div>
-                        {{ article.content|raw }}
+                        {{ article.content|raw}}
                     </div>
                     <br>
                     {% endif %}

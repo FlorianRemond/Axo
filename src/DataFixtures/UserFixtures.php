@@ -20,7 +20,7 @@ class UserFixtures extends Fixture
     {
 
         $faker = Factory::create('fr-FR');
-        for($i=0; $i <=5; $i++) {
+        for($i=0; $i <=105; $i++) {
 
             $username=$faker->name();
             $email = $faker->safeEmail;
