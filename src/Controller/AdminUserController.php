@@ -101,7 +101,6 @@ class AdminUserController extends AbstractController
     public function edit(User $user,Request $request,ObjectManager $manager){
 
         $formEditUser=$this->createForm(EditType::class, $user);
-
         //analyse de la requete passée
         $formEditUser->handleRequest($request);
 

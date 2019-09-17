@@ -13,6 +13,7 @@ class EditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
             ->add('email', EmailType::class)
             ->add('username')
@@ -24,6 +25,7 @@ class EditType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'validation_groups' => ['registration'],
         ]);
     }
 }

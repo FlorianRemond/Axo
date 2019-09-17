@@ -23,10 +23,10 @@ class MailerService extends AbstractController
     {
         $message = (new \Swift_Message('Mail de confirmation'))
             ->setFrom('axocapmailing@gmail.com')
-            ->setTo($to)
+            ->setTo('axocapmailing@gmail.com')
             ->setBody(
                 $this->renderView(
-                    'emails/' . $template,
+                    'emails/registration.html.twig',
                     [
                         'token' => $token,
                         'username' => $username
