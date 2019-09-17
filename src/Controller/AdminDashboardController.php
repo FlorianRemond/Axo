@@ -17,14 +17,13 @@ class AdminDashboardController extends AbstractController
      *
      */
     public function index(ObjectManager $manager,DateService $dateService){
+        $dateService->getDate();
 
         //ici on compte les articles en passant par une requete DQL et plutot que d'avoir les résultats sous forme de
         //tableau , la fonction ScalarResult affiche un seul résultat
         $articles = $manager -> createQuery ('SELECT COUNT (a) FROM App\Entity\Article a')->getSingleScalarResult();
         $users = $manager -> createQuery('SELECT COUNT (u) FROM App\Entity\User u')->getSingleScalarResult();
         $datesConnexion= $manager ->createQuery ('SELECT u.connectedAt FROM App\Entity\User u')->getResult();
-
-        $dateService->getDate();
 
         $count =0;
         $dateN = new \DateTime();

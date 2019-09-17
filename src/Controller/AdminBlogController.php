@@ -39,13 +39,11 @@ class AdminBlogController extends AbstractController{
                 $article = new Article ();
             }
             $form = $this->createForm(ArticleType::class, $article);
-
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
                 if (!$article->getId()) {
                     $article->setCreatedAt(new \DateTime());
-
                 }
                 $manager->persist($article);
                 $manager->flush();

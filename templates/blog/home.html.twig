@@ -37,7 +37,7 @@
                         <a href="{{ path('security_login')}}" class="badge badge-primary">Connexion</a>
                     {% endif %}
         {# Ici on affiche le contenu de l'article dans le cas ou celui est public, sans prise en compte de l'état du User#}
-                    {% if article.isPrivate == false %}
+                    {% if article.isPrivate == false %}a
                     <div>
                         {{ article.content|raw }}
                     </div>
