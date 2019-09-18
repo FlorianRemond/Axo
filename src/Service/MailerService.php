@@ -22,7 +22,7 @@ class MailerService extends AbstractController
     public function sendToken($token, $to, $username, $template)
     {
 
-        $message = (new \Swift_Message('Mail de confirmation'))
+        $message = (new \Swift_Message('Mail d\'Axocap'))
             ->setFrom('axocapmailing@gmail.com')
             ->setTo('axocapmailing@gmail.com')
             ->setBody(

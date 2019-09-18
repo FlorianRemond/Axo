@@ -18,3 +18,5 @@ validation inscription
 Mail de validation de la demande https://openclassrooms.com/forum/sujet/symfony-4-confirmation-dinscription
 
 swiftmailer : voir les variable dans un ficher text
+
+pour les mails codés les variables plutot que l'adresse axocap

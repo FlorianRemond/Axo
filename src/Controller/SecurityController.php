@@ -6,6 +6,7 @@ use App\Entity\PasswordReset;
 use App\Entity\PasswordUpdate;
 use App\Form\AccountType;
 use App\Form\LogType;
+use App\Form\MailResetType;
 use App\Form\PasswordResetType;
 use App\Form\PasswordUpdateType;
 use App\Form\RegistrationType;
@@ -81,7 +82,7 @@ class SecurityController extends AbstractController
             $email = $user ->getEmail();
             $username= $user ->getUsername();
             //envoi de mail avec les données du User
-            $mailerService ->sendToken($mailer,$token,$email,$username,'registration.html.twig');
+            $mailerService ->sendToken($token,$email,$username,'registration.html.twig');
             //message informatif
             $this->addFlash(
                 'success',
@@ -107,7 +108,6 @@ class SecurityController extends AbstractController
         //recupérer les erreurs d'authentification
         $error = $utils->getLastAuthenticationError();
         $username = $utils -> getLastUsername();
-        $this->addFlash('success', 'Vous êtes connecté sur l\'Axoblog');
         return $this -> render('security/login.html.twig',[
             //on passe a twig une variable qui récupère l'état de la variable $error
             'hasError' => $error !==null,
@@ -172,8 +172,50 @@ class SecurityController extends AbstractController
         ]);
     }
 
+
     /**
-     * @Route("/password-reset", name="security_password_reset")
+     * @Route ("/mail-password-reset", name="mail_password_reset")
+     * @param Request $request
+     * @param MailerService $mailerService
+     * @param Swift_Mailer $mailer
+     * @return Response
+     */
+    public function sendMailPasswordReset(Request$request, MailerService $mailerService,
+                                          \Swift_Mailer $mailer)
+    {
+        $user = $this->getUser();
+        $formMailReset = $this->createForm(MailResetType::class, $user);
+        $formMailReset->handleRequest($request);
+
+        if ($formMailReset->isSubmitted() && $formMailReset->isValid())
+        {
+
+            if (!$user->getEmail()) {
+                $this->addFlash('user-error', 'Email inconnu !');
+                return $this->redirectToRoute('security_registration');
+            } else {
+                $email = $user->getEmail();
+                $token = $user->getToken();
+                $username = $user->getEmail();
+                $template = 'MailToResetPassword.html.twig';
+                $mailerService->sendToken($token, $email, $username, $template);
+                $this->addFlash(
+                    'success',
+                    'Votre mot de passe a bien été modifié! Un email de confirmation vient de vous être envoyé.'
+                );
+            }
+                return $this->render('security/mailPasswordReset.html.twig');
+        }
+            return $this ->redirectToRoute('security_login',[
+                'formMailReset' => $formMailReset ->createView()
+            ]);
+
+    }
+
+
+
+    /**
+     * @Route("/password-reset/{token}", name="security_password_reset")
      * @param Request $request
      * @param ObjectManager $manager
      * @param MailerService $mailerService
@@ -183,25 +225,34 @@ class SecurityController extends AbstractController
     public function ResetPassword (Request $request, ObjectManager $manager, MailerService $mailerService,
                                     UserPasswordEncoderInterface $encoder):Response
     {
-        $passwordReset = new PasswordReset();
-        $user = $this ->getUser();
-        $formPasswordReset = $this ->createForm(PasswordResetType::class, $passwordReset);
-        $formPasswordReset ->handleRequest($request);
-        if($formPasswordReset->isSubmitted() && $formPasswordReset->isValid()){
-            $newPassword=$passwordReset->getNewPassword();
-            $hash=$encoder -> encodePassword($user, $newPassword);
-            $user->setPassword($hash);
-            $manager ->persist($user);
-            $manager ->flush();
-            $this->addFlash(
-                'success',
-                'Votre mot de passe a bien été réiniatialisé.'
-            );
-            return $this->redirectToRoute('security_login');
+        if($request ->isMethod('POST')) {
+            $email = $request->get('email');
+            $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $email]);
+            if ($user === null) {
+                $this->addFlash('user-errror', 'Utilisateur Inconnu');
+                return $this->redirectToRoute('security_registration');
+            }
         }
-        return $this ->render('security/resetPassword.html.twig',[
-            'formPasswordReset'=>$formPasswordReset->createView()
-        ]);
+            $passwordReset = new PasswordReset();
+            $user = $this->getUser();
+            $formPasswordReset = $this->createForm(PasswordResetType::class, $passwordReset);
+            $formPasswordReset->handleRequest($request);
+            if ($formPasswordReset->isSubmitted() && $formPasswordReset->isValid()) {
+                $newPassword = $passwordReset->getNewPassword();
+                $hash = $encoder->encodePassword($user, $newPassword);
+                $user->setPassword($hash);
+                $manager->persist($user);
+                $manager->flush();
+                $this->addFlash(
+                    'success',
+                    'Votre mot de passe a bien été réinitialisé.'
+                );
+                return $this->redirectToRoute('security_login');
+            }
+            return $this->render('security/resetPassword.html.twig', [
+                'formPasswordReset' => $formPasswordReset->createView()
+            ]);
+
     }
 
 

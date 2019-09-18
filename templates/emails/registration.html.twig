@@ -7,8 +7,10 @@
 </head>
 <body>
 <p>
-    Bonjour, <br>
+    Bonjour {{ username }},
+    <br>
     Cliquez sur ce lien pour finaliser votre inscription
+    <br>
     {# pour que le lien fonctionne, il est indispensable que le lien soit absolu. #}
   {# <a href="{{absolute_url(path('security_login',{'id':user.id,'token': user.token}))}}">Valider l'inscription</a> #}
     <a href="{{absolute_url(path('security_login'))}}">Valider l'inscription</a>
