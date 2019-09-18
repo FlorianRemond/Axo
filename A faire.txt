@@ -5,10 +5,8 @@ Formulaire changement de mot de passe
 Mailing a revoir
 Message flash sur les pages
 
-Revoir édition du profil
 Revoir Role = User erreur sur le getTitle
 voir Vich\UploaderBundle\Naming\UniqidNamer pour unique et suppression
-
 
 Admin: voir FosUSer
  envoi de mail des connexion au admin/login
@@ -19,14 +17,4 @@ Admin: voir FosUSer
 validation inscription
 Mail de validation de la demande https://openclassrooms.com/forum/sujet/symfony-4-confirmation-dinscription
 
-
 swiftmailer : voir les variable dans un ficher text
-
-
-bundle :
-swiftmailier
-twig
-vich uplaoder
-ckeditor https://ckeditor.com/docs/ckeditor4/latest/examples/uicolor.html
-
-https://informatux.com/news/category/2/php

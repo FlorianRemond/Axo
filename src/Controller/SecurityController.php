@@ -2,16 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\PasswordReset;
 use App\Entity\PasswordUpdate;
 use App\Form\AccountType;
 use App\Form\LogType;
+use App\Form\PasswordResetType;
 use App\Form\PasswordUpdateType;
 use App\Form\RegistrationType;
+use App\Form\ResettingType;
 use App\Repository\UserRepository;
 use App\Service\MailerService;
 use Doctrine\Common\Persistence\ObjectManager;
+use Metadata\Tests\Driver\Fixture\A\A;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Swift_Mailer;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -37,25 +42,21 @@ class SecurityController extends AbstractController
         return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
     }
 
-
-
-
     //formulaire d'inscription
-
     /**
      * @Route("/inscription", name="security_registration")
      * @param Request $request
      * @param ObjectManager $manager
      * @param UserPasswordEncoderInterface $encoder
      * @param MailerService $mailerService
-     * @param \Swift_Mailer $mailer
+     * @param Swift_Mailer $mailer
      * @param AuthenticationUtils $utils
      * @return RedirectResponse|Response
      * @throws \Exception
      */
     public function registration(Request $request, ObjectManager $manager,
                                  UserPasswordEncoderInterface $encoder,
-                                 MailerService $mailerService, \Swift_Mailer $mailer,AuthenticationUtils $utils){
+                                 MailerService $mailerService, Swift_Mailer $mailer,AuthenticationUtils $utils){
         //recupérer les erreurs d'authentification
         $error = $utils->getLastAuthenticationError();
         $lastUsername = $utils -> getLastUsername();
@@ -81,7 +82,7 @@ class SecurityController extends AbstractController
             $username= $user ->getUsername();
             //envoi de mail avec les données du User
             $mailerService ->sendToken($mailer,$token,$email,$username,'registration.html.twig');
-
+            //message informatif
             $this->addFlash(
                 'success',
                 'Merci de vous être enregistré, vous allez recevoir un email de validation !'
@@ -96,21 +97,21 @@ class SecurityController extends AbstractController
         ]);
     }
 
-
-
     //formulaire de connexion
     /**
      * @Route("/connexion", name ="security_login")
-     *
+     * @param AuthenticationUtils $utils
+     * @return Response
      */
     public function login(AuthenticationUtils $utils){
         //recupérer les erreurs d'authentification
         $error = $utils->getLastAuthenticationError();
         $username = $utils -> getLastUsername();
-
+        $this->addFlash('success', 'Vous êtes connecté sur l\'Axoblog');
         return $this -> render('security/login.html.twig',[
             //on passe a twig une variable qui récupère l'état de la variable $error
             'hasError' => $error !==null,
+
             //on récupère le nom d'utilisateur renseigné précédement et on le passe à twig
             'username'=> $username,
         ]);
@@ -121,6 +122,7 @@ class SecurityController extends AbstractController
      * @Route ("/deconnexion", name="security_logout")
      */
     public function logout (){
+        $this->addFlash('success','Vous êtes à présent déconnecté, à bientot !');
         // Route qui mène vers rien afin de sortir du site
     }
 
@@ -128,14 +130,20 @@ class SecurityController extends AbstractController
      * Permet de modifier le mot de passe
      * @Route("/password-update",name="security_password_update")
      * @Security("is_granted('ROLE_USER')")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @param ObjectManager $manager
+     * @param MailerService $mailerService
+     * @param Swift_Mailer $mailer
      * @return Response
      */
-    public function UpdatePassword (Request $request, UserPasswordEncoderInterface $encoder, ObjectManager $manager){
+    public function UpdatePassword (Request $request, UserPasswordEncoderInterface $encoder, ObjectManager $manager,
+                                    MailerService $mailerService, Swift_Mailer $mailer)
+    {
         $passwordUpdate = new PasswordUpdate();
         $user = $this ->getUser();
         $formPassword =$this ->createForm(PasswordUpdateType::class,$passwordUpdate);
         $formPassword->handleRequest($request);
-
         if($formPassword->isSubmitted() && $formPassword->isValid()){
             // Vérification de l'ancien mot de passe par rapport à la base
             if (!password_verify($passwordUpdate->getOldPassword(), $user -> getPassword())){
@@ -148,17 +156,63 @@ class SecurityController extends AbstractController
                 $user->setPassword($hash);
                 $manager->persist($user);
                 $manager->flush();
-
+                $email =$user->getEmail();
+                $username = $user ->getUsername();
+                $template='confirmPasswordChange.html.twig';
+                $mailerService ->sendToken($mailer,$email, $username,$template);
                 $this->addFlash(
                     'success',
-                    'Votre mot de passe a bien été modifié !'
+                    'Votre mot de passe a bien été modifié! Un email de confirmation vient de vous être envoyé.'
                 );
-                return $this->redirectToRoute('home');
+                return $this->redirectToRoute('security_login');
             }
         }
         return $this->render('security/password.html.twig',[
             'formPassword'=> $formPassword->createView()
         ]);
     }
+
+    /**
+     * @Route("/password-reset", name="security_password_reset")
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @param MailerService $mailerService
+     * @param UserPasswordEncoderInterface $encoder
+     * @return RedirectResponse
+     */
+    public function ResetPassword (Request $request, ObjectManager $manager, MailerService $mailerService,
+                                    UserPasswordEncoderInterface $encoder):Response
+    {
+        $passwordReset = new PasswordReset();
+        $user = $this ->getUser();
+        $formPasswordReset = $this ->createForm(PasswordResetType::class, $passwordReset);
+        $formPasswordReset ->handleRequest($request);
+        if($formPasswordReset->isSubmitted() && $formPasswordReset->isValid()){
+            $newPassword=$passwordReset->getNewPassword();
+            $hash=$encoder -> encodePassword($user, $newPassword);
+            $user->setPassword($hash);
+            $manager ->persist($user);
+            $manager ->flush();
+            $this->addFlash(
+                'success',
+                'Votre mot de passe a bien été réiniatialisé.'
+            );
+            return $this->redirectToRoute('security_login');
+        }
+        return $this ->render('security/resetPassword.html.twig',[
+            'formPasswordReset'=>$formPasswordReset->createView()
+        ]);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 }

@@ -14,7 +14,7 @@ class ArticleFixtures extends Fixture
     {
         $faker = Factory::create('fr-FR');
 
-        for ($i = 1; $i <= 50; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
 
             $title = $faker->sentence();
             $content = $faker->paragraph(40);
