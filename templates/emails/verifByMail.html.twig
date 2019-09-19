@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title> Connexion en Administrateur au site AxoBlog</title>
+</head>
+<body>
+<p>
+    Bonjour {{ username }}, <br>
+
+    vous recevez ce message car votre compte est inactif depuis 30 jours et vous venez de vous connecter à la partie
+    administrateur du site.
+
+    {# pour que le lien fonctionne, il est indispensable que le lien soit absolu. #}
+    <a href="{{absolute_url(path('home'))}}">Vers le site</a>
+</p>
+</body>
+</html>

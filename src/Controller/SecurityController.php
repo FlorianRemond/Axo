@@ -126,91 +126,8 @@ class SecurityController extends AbstractController
         // Route qui mène vers rien afin de sortir du site
     }
 
-    /**
-     * Permet de modifier le mot de passe
-     * @Route("/password-update",name="security_password_update")
-     * @Security("is_granted('ROLE_USER')")
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $encoder
-     * @param ObjectManager $manager
-     * @param MailerService $mailerService
-     * @param Swift_Mailer $mailer
-     * @return Response
-     */
-    public function UpdatePassword (Request $request, UserPasswordEncoderInterface $encoder, ObjectManager $manager,
-                                    MailerService $mailerService, Swift_Mailer $mailer)
-    {
-        $passwordUpdate = new PasswordUpdate();
-        $user = $this ->getUser();
-        $formPassword =$this ->createForm(PasswordUpdateType::class,$passwordUpdate);
-        $formPassword->handleRequest($request);
-        if($formPassword->isSubmitted() && $formPassword->isValid()){
-            // Vérification de l'ancien mot de passe par rapport à la base
-            if (!password_verify($passwordUpdate->getOldPassword(), $user -> getPassword())){
-                // Gestion de l'erreur
-                $formPassword->get('oldPassword')-> addError(new FormError("Le mot de passe fourni n'est 
-                    pas le bon mot de passe"));
-            }else{
-                $newPassword = $passwordUpdate->getNewPassword();
-                $hash=$encoder->encodePassword($user, $newPassword);
-                $user->setPassword($hash);
-                $manager->persist($user);
-                $manager->flush();
-                $email =$user->getEmail();
-                $username = $user ->getUsername();
-                $template='confirmPasswordChange.html.twig';
-                $mailerService ->sendToken($mailer,$email, $username,$template);
-                $this->addFlash(
-                    'success',
-                    'Votre mot de passe a bien été modifié! Un email de confirmation vient de vous être envoyé.'
-                );
-                return $this->redirectToRoute('security_login');
-            }
-        }
-        return $this->render('security/password.html.twig',[
-            'formPassword'=> $formPassword->createView()
-        ]);
-    }
 
 
-    /**
-     * @Route ("/mail-password-reset", name="mail_password_reset")
-     * @param Request $request
-     * @param MailerService $mailerService
-     * @param Swift_Mailer $mailer
-     * @return Response
-     */
-    public function sendMailPasswordReset(Request$request, MailerService $mailerService,
-                                          \Swift_Mailer $mailer)
-    {
-        $user = $this->getUser();
-        $formMailReset = $this->createForm(MailResetType::class, $user);
-        $formMailReset->handleRequest($request);
-
-        if ($formMailReset->isSubmitted() && $formMailReset->isValid())
-        {
-
-            if (!$user->getEmail()) {
-                $this->addFlash('user-error', 'Email inconnu !');
-                return $this->redirectToRoute('security_registration');
-            } else {
-                $email = $user->getEmail();
-                $token = $user->getToken();
-                $username = $user->getEmail();
-                $template = 'MailToResetPassword.html.twig';
-                $mailerService->sendToken($token, $email, $username, $template);
-                $this->addFlash(
-                    'success',
-                    'Votre mot de passe a bien été modifié! Un email de confirmation vient de vous être envoyé.'
-                );
-            }
-                return $this->render('security/mailPasswordReset.html.twig');
-        }
-            return $this ->redirectToRoute('security_login',[
-                'formMailReset' => $formMailReset ->createView()
-            ]);
-
-    }
 
 
 
@@ -245,7 +162,7 @@ class SecurityController extends AbstractController
                 $manager->flush();
                 $this->addFlash(
                     'success',
-                    'Votre mot de passe a bien été réinitialisé.'
+                    'Votre mot de passe a bien été réiniatialisé.'
                 );
                 return $this->redirectToRoute('security_login');
             }

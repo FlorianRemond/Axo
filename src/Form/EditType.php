@@ -18,8 +18,6 @@ class EditType extends AbstractType
             ->add('email', EmailType::class)
             ->add('username')
             ->add('society');
-
-
     }
     public function configureOptions(OptionsResolver $resolver)
     {

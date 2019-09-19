@@ -13,7 +13,7 @@ class MailResetType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('token')
+          //  ->add('token')
 
         ;
     }
@@ -22,6 +22,7 @@ class MailResetType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'validation_groups' => ['registration'],
         ]);
     }
 }

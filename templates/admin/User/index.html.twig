@@ -14,6 +14,7 @@
                 <th>Société</th>
                 <th>Adresse email</th>
                 <th>Inscrit le </th>
+                <th>Date connexion </th>
             </tr>
             </thead>
 
@@ -25,6 +26,7 @@
                     <td>{{ user.society }}</td>
                     <td>{{ user.email}}</td>
                     <td>{{ user.createdAt | date ('Y-M-j') }}</td>
+                    <td>{{ user.connectedAt | date ('Y-M-j') }}</td>
                     <td>
                         <a href="{{ path('admin_user_edit',{'id':user.id})  }}" class="badge badge-primary">Edit</a>
                         <a href="{{ path('admin_user_delete',{'id':user.id}) }}" class="badge badge-danger">Suppr</a>
