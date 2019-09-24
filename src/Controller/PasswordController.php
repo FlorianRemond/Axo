@@ -5,6 +5,7 @@ use App\Entity\PasswordUpdate;
 use App\Entity\User;
 use App\Form\PasswordUpdateType;
 use Doctrine\Common\Persistence\ObjectManager;
+use Exception;
 use phpDocumentor\Reflection\Types\This;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Swift_Mailer;
@@ -12,6 +13,7 @@ use App\Form\MailResetType;
 use App\Service\MailerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +25,7 @@ class PasswordController extends AbstractController
 
     /**
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     private function generateToken()
     {
@@ -35,38 +37,49 @@ class PasswordController extends AbstractController
      * @param Request $request
      * @param MailerService $mailerService
      * @param Swift_Mailer $mailer
-     * @param User $user
-     * @param ObjectManager $manager
-     * @return Response
+     * @return RedirectResponse|Response
+     * @throws Exception
      */
     public function sendMailPasswordReset(Request$request, MailerService $mailerService,
-                                          \Swift_Mailer $mailer, User $user, ObjectManager $manager)
+                                          \Swift_Mailer $mailer)
     {
         $manager = $this->getDoctrine()->getManager();
         $formMailReset = $this->createForm(MailResetType::class);
         $formMailReset->handleRequest($request);
+        $email= $formMailReset-> get('email')->getData();
 
         if ($formMailReset->isSubmitted() && $formMailReset->isValid()) {
             $user = $manager->getRepository(User::class)->findOneBy(['email' => $email]);
+            $token = random_bytes(16);
+//Conversion du binaire en hexadécimal
+            $token = bin2hex($token);
+            $user->setToken($token);
+            $manager->persist($user);
+            $manager->flush();
+
             if ($user === null) {
                 $this->addFlash('user-error',
                     'Utilisateur inconnu, merci de renseigner un email valide');
                 return $this->redirectToRoute('security_registration');
             }
-            $token = $user->setToken();
+            $token = $user->getToken();
             $email = $user->getEmail();
             $template = 'MailtoResetPassword.html.twig';
             $username = $user->getUsername();
             $mailerService->sendToken($token, $email, $username, $template);
             return $this->redirectToRoute('home');
         }
-        return $this->render('MailToResetPassword.html.twig',['formMailReset' => $formMailReset->createView()
+        return $this->render('security/mailPasswordReset.html.twig',['formMailReset' => $formMailReset->createView()
         ]);
     }
 
-
-
-
+    /**
+     * modification du mot de passe après réception du mail
+     * @Route ("/password-reset",name="security_password_reset"
+     */
+    public function passwordReset(){
+        
+    }
 
     /**
      * Permet de modifier le mot de passe

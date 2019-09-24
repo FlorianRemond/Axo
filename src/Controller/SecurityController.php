@@ -98,6 +98,8 @@ class SecurityController extends AbstractController
         ]);
     }
 
+
+
     //formulaire de connexion
     /**
      * @Route("/connexion", name ="security_login")
@@ -117,6 +119,8 @@ class SecurityController extends AbstractController
         ]);
     }
 
+
+
     //Permet de se déconnecter
     /**
      * @Route ("/deconnexion", name="security_logout")
@@ -125,62 +129,4 @@ class SecurityController extends AbstractController
         $this->addFlash('success','Vous êtes à présent déconnecté, à bientot !');
         // Route qui mène vers rien afin de sortir du site
     }
-
-
-
-
-
-
-    /**
-     * @Route("/password-reset/{token}", name="security_password_reset")
-     * @param Request $request
-     * @param ObjectManager $manager
-     * @param MailerService $mailerService
-     * @param UserPasswordEncoderInterface $encoder
-     * @return RedirectResponse
-     */
-    public function ResetPassword (Request $request, ObjectManager $manager, MailerService $mailerService,
-                                    UserPasswordEncoderInterface $encoder):Response
-    {
-        if($request ->isMethod('POST')) {
-            $email = $request->get('email');
-            $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $email]);
-            if ($user === null) {
-                $this->addFlash('user-errror', 'Utilisateur Inconnu');
-                return $this->redirectToRoute('security_registration');
-            }
-        }
-            $passwordReset = new PasswordReset();
-            $user = $this->getUser();
-            $formPasswordReset = $this->createForm(PasswordResetType::class, $passwordReset);
-            $formPasswordReset->handleRequest($request);
-            if ($formPasswordReset->isSubmitted() && $formPasswordReset->isValid()) {
-                $newPassword = $passwordReset->getNewPassword();
-                $hash = $encoder->encodePassword($user, $newPassword);
-                $user->setPassword($hash);
-                $manager->persist($user);
-                $manager->flush();
-                $this->addFlash(
-                    'success',
-                    'Votre mot de passe a bien été réiniatialisé.'
-                );
-                return $this->redirectToRoute('security_login');
-            }
-            return $this->render('security/resetPassword.html.twig', [
-                'formPasswordReset' => $formPasswordReset->createView()
-            ]);
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
 }
