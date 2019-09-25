@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,12 +18,12 @@ class AdminAccountController extends AbstractController
     public function login(AuthenticationUtils $utils, UserRepository $userRepository)
     {
 
-        $error=$utils->getLastAuthenticationError();
-        $username=$utils->getLastUsername();
+        $error = $utils->getLastAuthenticationError();
+        $username = $utils->getLastUsername();
 
 
         return $this->render('admin/account/login.html.twig', [
-            'hasError' => $error !==null,
+            'hasError' => $error !== null,
             'username' => $username
         ]);
 

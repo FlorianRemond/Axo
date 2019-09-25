@@ -11,9 +11,12 @@ use App\Repository\UserRepository;
 
 class VerificationService
 {
-    public function verifDateAdmin(User $user){
-              $user->getSociety();
-        dump($user);
+    public function checkDateAccount(UserRepository $userRepository){
+   $date =$userRepository->findConnectUsers();
+   dump ($date);
+
 
     }
+
+
 }

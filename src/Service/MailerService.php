@@ -1,6 +1,9 @@
 <?php
+
 namespace App\Service;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 class MailerService extends AbstractController
 {
     /**
@@ -27,7 +30,7 @@ class MailerService extends AbstractController
             ->setTo('axocapmailing@gmail.com')
             ->setBody(
                 $this->renderView(
-                    'emails/'.$template ,
+                    'emails/' . $template,
                     [
                         'token' => $token,
                         'username' => $username
