@@ -9,7 +9,9 @@ use App\Service\MailerService;
 use App\Service\VerificationService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Query\Expr\Select;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\StatService;
 use App\Repository\UserRepository;
@@ -21,18 +23,16 @@ class AdminDashboardController extends AbstractController
      * @param ObjectManager $manager
      * @param DateService $dateService
      * @param MailerService $mailerService
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @return Response
+     * @throws Exception
      */
-    public function index(ObjectManager $manager, DateService $dateService, MailerService $mailerService,
-                          UserRepository $userRepository)
+    public function index(ObjectManager $manager, DateService $dateService, MailerService $mailerService)
     {
         $dateService->getDate();
 
-
         //Vérification de la dernière date de connexion et envoi de mail si supérieur à 30 jours
         $user = $this->getUser();
-        //  $society = $user->getSociety();
+        $society = $user->getSociety();
         $email = $user->getEmail();
         $username = $user->getUsername();
         $template = "verifByMail.html.twig";
@@ -41,7 +41,7 @@ class AdminDashboardController extends AbstractController
         $connectedOk = $connectedMonth->format('Y-m-d');
         $date = new \DateTime();
         $dateJour = $date->format('Y-m-d');
-        if (($connectedOk < $dateJour) && ($societyy == ('Axocap'))) {
+        if (($connectedOk < $dateJour) && ($society == ('Axocap'))) {
             $mailerService->sendToken(null, $email, $username, $template);
         }
 
@@ -50,9 +50,8 @@ class AdminDashboardController extends AbstractController
         $articles = $manager->createQuery('SELECT COUNT (a) FROM App\Entity\Article a')->getSingleScalarResult();
         $users = $manager->createQuery('SELECT COUNT (u) FROM App\Entity\User u')->getSingleScalarResult();
         $datesConnexion = $manager->createQuery('SELECT u.connectedAt FROM App\Entity\User u')->getResult();
-        $jobs = $manager->getRepository(User::class)->findBy([
-            'Society' => "Axocap"]);
-        dump($jobs);
+
+        //compteur de connexion quotidienne
         $count = 0;
         $dateN = new \DateTime();
         $dateNow = $dateN->format('Y-m-d');
@@ -60,7 +59,6 @@ class AdminDashboardController extends AbstractController
             $dateCo = $dateConnexion['connectedAt']->format('Y-m-d');
             if ($dateCo == $dateNow) {
                 $count++;
-
             }
         }
         return $this->render('admin\dashboard\index.html.twig', [

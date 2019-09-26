@@ -2,31 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\PasswordReset;
-use App\Entity\PasswordUpdate;
-use App\Form\AccountType;
 use App\Form\LogType;
-use App\Form\MailResetType;
-use App\Form\PasswordResetType;
-use App\Form\PasswordUpdateType;
 use App\Form\RegistrationType;
 use App\Form\ResettingType;
-use App\Repository\UserRepository;
 use App\Service\MailerService;
 use Doctrine\Common\Persistence\ObjectManager;
-use Metadata\Tests\Driver\Fixture\A\A;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Swift_Mailer;
-use Symfony\Component\Form\Extension\Core\Type\ResetType;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\User;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -57,76 +44,76 @@ class SecurityController extends AbstractController
      */
     public function registration(Request $request, ObjectManager $manager,
                                  UserPasswordEncoderInterface $encoder,
-                                 MailerService $mailerService, Swift_Mailer $mailer,AuthenticationUtils $utils){
+                                 MailerService $mailerService, Swift_Mailer $mailer, AuthenticationUtils $utils)
+    {
         //recupérer les erreurs d'authentification
         $error = $utils->getLastAuthenticationError();
-        $lastUsername = $utils -> getLastUsername();
+        $lastUsername = $utils->getLastUsername();
         $user = new User();
-        $formUser=$this->createForm(RegistrationType::class, $user);
+        $formUser = $this->createForm(RegistrationType::class, $user);
 
         //analyse de la requete passée
         $formUser->handleRequest($request);
 
-        if ($formUser->isSubmitted() && $formUser->isValid()){
+        if ($formUser->isSubmitted() && $formUser->isValid()) {
             //envoi des données en base
-            $hash =$encoder ->encodePassword($user,$user->getPassword());
+            $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
             $user->setToken($this->generateToken());
             $user->setCreatedAt(new\DateTime());
             $user->setConnectedAt(new \DateTime());
-            $manager->persist($user );
+            $manager->persist($user);
             $manager->flush();
 
             //récupération des données
             $token = $user->getToken();
-            $email = $user ->getEmail();
-            $username= $user ->getUsername();
+            $email = $user->getEmail();
+            $username = $user->getUsername();
             //envoi de mail avec les données du User
-            $mailerService ->sendToken($token,$email,$username,'registration.html.twig');
+            $mailerService->sendToken($token, $email, $username, 'registration.html.twig');
             //message informatif
             $this->addFlash(
                 'success',
                 'Merci de vous être enregistré, vous allez recevoir un email de validation !'
             );
-            return $this -> redirectToRoute('security_login');
+            return $this->redirectToRoute('security_login');
         }
         //Vérification des données passées pour le User
-        return $this-> render('security/registration.html.twig',[
+        return $this->render('security/registration.html.twig', [
             'formUser' => $formUser->createView(),
             'last_username' => $lastUsername,
             'error' => $error,
         ]);
     }
 
-
-
     //formulaire de connexion
+
     /**
      * @Route("/connexion", name ="security_login")
      * @param AuthenticationUtils $utils
      * @return Response
      */
-    public function login(AuthenticationUtils $utils){
+    public function login(AuthenticationUtils $utils)
+    {
         //recupérer les erreurs d'authentification
         $error = $utils->getLastAuthenticationError();
-        $username = $utils -> getLastUsername();
-        return $this -> render('security/login.html.twig',[
+        $username = $utils->getLastUsername();
+        return $this->render('security/login.html.twig', [
             //on passe a twig une variable qui récupère l'état de la variable $error
-            'hasError' => $error !==null,
+            'hasError' => $error !== null,
 
             //on récupère le nom d'utilisateur renseigné précédement et on le passe à twig
-            'username'=> $username,
+            'username' => $username,
         ]);
     }
-
-
 
     //Permet de se déconnecter
     /**
      * @Route ("/deconnexion", name="security_logout")
      */
-    public function logout (){
-        $this->addFlash('success','Vous êtes à présent déconnecté, à bientot !');
+    public function logout()
+    {
+        $this->addFlash('success', 'Vous êtes à présent déconnecté, à bientot !');
         // Route qui mène vers rien afin de sortir du site
     }
 }

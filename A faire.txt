@@ -4,7 +4,7 @@ Formulaire changement de mot de passe
 
 Mailing a revoir
 Message flash sur les pages
-
+VOir affichage des erreurs
 Revoir Role = User erreur sur le getTitle
 voir Vich\UploaderBundle\Naming\UniqidNamer pour unique et suppression
 

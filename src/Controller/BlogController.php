@@ -9,8 +9,10 @@ use App\Repository\ArticleRepository;
 use App\Service\DateService;
 use App\Service\StatService;
 use Doctrine\Common\Persistence\ObjectManager;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,71 +20,72 @@ use Symfony\Component\HttpFoundation\Request;
 
 class BlogController extends AbstractController
 {
-
-
     //route principale sans adresse
     /**
      * @Route("/",name="home")
      * @Route("/blog",name="blog")
+     * @param ArticleRepository $repo
+     * @param StatService $statService
+     * @param DateService $dateService
+     * @return Response
      */
-    public function home(ArticleRepository $repo, StatService $statService, DateService $dateService){
-
-
+    public function home(ArticleRepository $repo, StatService $statService, DateService $dateService)
+    {
         $statService->getStats();
 
-        $articles = $repo -> findAll();
-        return $this -> render('blog/home.html.twig', [
+        $articles = $repo->findAll();
+
+        return $this->render('blog/home.html.twig', [
             'controller_name' => 'BlogController',
-            'articles'=>$articles]);
+            'articles' => $articles]);
     }
 
     //Utilisation de routes multiples afin d'utiliser une seule fois le formulaire
+
     /**
      * @Route ("/blog/new",name="blog_create")
      * @Route ("/blog/{id}/edit",name="blog_edit")
      * @Security("is_granted('ROLE_ADMIN')")
-     *
+     * @param Article|null $article
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @return RedirectResponse|Response
+     * @throws Exception
      */
-    public function create (Article $article = null, Request $request, ObjectManager $manager){
+    public function create(Article $article = null, Request $request, ObjectManager $manager)
+    {
 
-        if(!$article) {
+        if (!$article) {
             $article = new Article();
         }
-        //création du formulaire basé sur l'entité Article
-        // on peut utiliser le fomulaire ArticleType ou la solution ci-dessous
-       // $form = $this ->createFormBuilder($article)
-       //          ->add('title', TextType::class)
-       //         ->add ('content', TextareaType::class)
-       //         ->add ('image')
-       //         -> getForm();
 
         //ici on appelle le formulaire et on le lie à l'article
-        $form = $this -> createForm(ArticleType::class,$article);
+        $form = $this->createForm(ArticleType::class, $article);
 
         //analyse de la requete Http que je passe en paramètre
-        $form ->handleRequest($request);
+        $form->handleRequest($request);
 
-      //vérifier les données passées dans l'article
-      //dump($article);
+        //vérifier les données passées dans l'article
+        //dump($article);
 
-      //Vérification de la soumission du formulaire et de la confirmité de celui-ci
-      if($form->isSubmitted() && $form ->isValid()){
-          if(!$article->getId()) {
-              //ajout de la date de la création des l'ajout de l'article
-              $article->setCreatedAt(new \DateTime());
-          }
-          //on fait persister l'article dans le temps
-          $manager->persist($article);
-          //on envoi l'article en BDD
-          $manager->flush();
-          //ici on repart vers la vue de l'article enregistré précédement,
-          //en récupérant l'id de celui-ci et en l'injectant dans la route
-          return $this ->redirectToRoute('blog_show',['id'=>$article->getId()]);
-      }
-        return $this -> render ('blog/create.html.twig',[
-            'formArticle'=> $form->createView(),
+        //Vérification de la soumission du formulaire et de la confirmité de celui-ci
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!$article->getId()) {
+                //ajout de la date de la création des l'ajout de l'article
+                $article->setCreatedAt(new \DateTime());
+            }
+            //on fait persister l'article dans le temps
+            $manager->persist($article);
+            //on envoi l'article en BDD
+            $manager->flush();
+            //ici on repart vers la vue de l'article enregistré précédement,
+            //en récupérant l'id de celui-ci et en l'injectant dans la route
+            return $this->redirectToRoute('blog_show', ['id' => $article->getId()]);
+        }
+        return $this->render('blog/create.html.twig', [
+            'formArticle' => $form->createView(),
             //changer le texte du bouton en fonction de si l'on édite ou si l'on crée un article
-            'editMode' => $article->getId()!== null
+            'editMode' => $article->getId() !== null
         ]);
     }
 
@@ -93,7 +96,7 @@ class BlogController extends AbstractController
      * @return Response
      */
 
-    public function show (Article $article)
+    public function show(Article $article)
     {
         //$repo = $this -> getDoctrine()-> getRepository(Article::class);
         // $article =$repo -> find($id);

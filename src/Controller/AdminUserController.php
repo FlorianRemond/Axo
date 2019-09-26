@@ -25,10 +25,10 @@ class AdminUserController extends AbstractController
      * @param UserRepository $repo
      * @return Response
      */
-    public function index(UserRepository $repo){
-
+    public function index(UserRepository $repo)
+    {
         return $this->render('admin/user/index.html.twig', [
-          'users'=> $repo ->findAll()
+            'users' => $repo->findAll()
         ]);
     }
 
@@ -40,11 +40,12 @@ class AdminUserController extends AbstractController
      * @param ObjectManager $manager
      * @return Response
      */
-    public function delete(User $user, ObjectManager $manager){
+    public function delete(User $user, ObjectManager $manager)
+    {
         $manager->remove($user);
         $manager->flush();
-        $this ->addFlash('success','L\'utilisateur a bien été supprimé');
-        return $this ->redirectToRoute('admin_user_index');
+        $this->addFlash('success', 'L\'utilisateur a bien été supprimé');
+        return $this->redirectToRoute('admin_user_index');
     }
 
     /**
@@ -57,37 +58,34 @@ class AdminUserController extends AbstractController
      * @return RedirectResponse|Response
      * @throws Exception
      */
-    public function create (User $user=null, Request $request, ObjectManager $manager,
-                            UserPasswordEncoderInterface $encoder){
-
-        if(!$user){
-            $user=new User();
+    public function create(User $user = null, Request $request, ObjectManager $manager,
+                           UserPasswordEncoderInterface $encoder)
+    {
+        if (!$user) {
+            $user = new User();
         }
-        $formUser=$this->createForm(RegistrationType::class, $user);
+        $formUser = $this->createForm(RegistrationType::class, $user);
         //analyse de la requete passée
         $formUser->handleRequest($request);
 
-        if ($formUser->isSubmitted() && $formUser->isValid()){
+        if ($formUser->isSubmitted() && $formUser->isValid()) {
             if (!$user->getId()) {
                 $user->setCreatedAt(new\DateTime());
                 $user->setConnectedAt(new\DateTime());
 
             }
-            $hash =$encoder ->encodePassword($user,$user->getPassword());
+            $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
-            $manager->persist($user );
+            $manager->persist($user);
             $manager->flush();
-
-
-            return $this -> redirectToRoute('admin_user_index');
+            return $this->redirectToRoute('admin_user_index');
         }
         //Vérification des données passées pour le User
         //dump($user);
-        return $this-> render('security/registration.html.twig',[
+        return $this->render('security/registration.html.twig', [
             'formUser' => $formUser->createView()
         ]);
     }
-
 
     /**
      * @Route("/admin/user/{id}/edit", name="admin_user_edit")
@@ -98,22 +96,22 @@ class AdminUserController extends AbstractController
      * @return RedirectResponse|Response
      * @throws Exception
      */
-    public function edit(User $user,Request $request,ObjectManager $manager){
+    public function edit(User $user, Request $request, ObjectManager $manager)
+    {
 
-        $formEditUser=$this->createForm(EditType::class, $user);
+        $formEditUser = $this->createForm(EditType::class, $user);
         //analyse de la requete passée
         $formEditUser->handleRequest($request);
 
-        if ($formEditUser->isSubmitted() && $formEditUser->isValid()){
-
-            $manager->persist($user );
+        if ($formEditUser->isSubmitted() && $formEditUser->isValid()) {
+            $manager->persist($user);
             $manager->flush();
 
-            return $this -> redirectToRoute('admin_user_index');
+            return $this->redirectToRoute('admin_user_index');
         }
         //Vérification des données passées pour le User
         //dump($user);
-        return $this-> render('admin/user/edit.html.twig',[
+        return $this->render('admin/user/edit.html.twig', [
             'formUser' => $formEditUser->createView()
         ]);
     }

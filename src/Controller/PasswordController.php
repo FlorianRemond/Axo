@@ -89,21 +89,21 @@ class PasswordController extends AbstractController
         $formPasswordReset = $this->createForm(PasswordResetType::class, $passwordReset);
         $formPasswordReset->handleRequest($request);
 
-       if($formPasswordReset->isSubmitted()&& $formPasswordReset->isValid()) {
-            $user = $manager->getRepository(User::class)->findOneBy(['token'=>$token]);
-          //  $formPasswordReset->get('newPassword');
-           /* @var $user User */
+        if ($formPasswordReset->isSubmitted() && $formPasswordReset->isValid()) {
+            $user = $manager->getRepository(User::class)->findOneBy(['token' => $token]);
+            //  $formPasswordReset->get('newPassword');
+            /* @var $user User */
             if ($user === null) {
                 $this->addFlash('success', 'Token Inconnu');
                 return $this->redirectToRoute('home');
             }
-                $newPassword = $passwordReset ->getNewPassword();
-                $hash = $encoder->encodePassword($user, $newPassword);
-                $user->setPassword($hash);
-                $user->setToken(null);
-                $manager->persist($user);
-                $manager->flush();
-                //   $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('password')));
+            $newPassword = $passwordReset->getNewPassword();
+            $hash = $encoder->encodePassword($user, $newPassword);
+            $user->setPassword($hash);
+            $user->setToken(null);
+            $manager->persist($user);
+            $manager->flush();
+            //   $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('password')));
             $this->addFlash('success', 'Mot de passe mis à jour');
             return $this->redirectToRoute('security_login');
         } else {
