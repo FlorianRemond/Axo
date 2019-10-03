@@ -1,0 +1,5 @@
+https://openclassrooms.com/forum/categorie/php
+
+https://www.developpez.net/forums/f1508/php/bibliotheques-frameworks/symfony/debuter/
+
+https://stackoverflow.com/questions/58217733/add-a-captcha-on-the-login-page
