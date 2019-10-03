@@ -31,6 +31,7 @@ class SecurityController extends AbstractController
     }
 
     //formulaire d'inscription
+
     /**
      * @Route("/inscription", name="security_registration")
      * @param Request $request
@@ -95,10 +96,29 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $utils)
     {
+        if (isset($_POST['submitpost'])) {
+            if (isset($_POST ['g-recaptcha-response'])) {
+                    $secret = '6Le9gbsUAAAAAO38NXkCckxDCooWToExnyAfZW0q';
+                    $recaptcha = new \ReCaptcha\ReCaptcha($secret);
+                    $resp = $recaptcha->setExpectedHostname(' recaptcha-demo.appspot.com ')
+                        ->verify($_POST['g-recaptcha-response']);
+                    if ($resp->isSuccess()) {
+                        echo 'captcha ok ';
+                    } else {
+                        $errors = $resp->getErrorCodes();
+                        echo 'captcha non ok ';
+                        var_dump($errors);
+                    }
+                }else{
+                var_dump('Captcha non rempli');
+            }
+        }
         //recupérer les erreurs d'authentification
         $error = $utils->getLastAuthenticationError();
         $username = $utils->getLastUsername();
+
         return $this->render('security/login.html.twig', [
+
             //on passe a twig une variable qui récupère l'état de la variable $error
             'hasError' => $error !== null,
 
@@ -107,7 +127,9 @@ class SecurityController extends AbstractController
         ]);
     }
 
+
     //Permet de se déconnecter
+
     /**
      * @Route ("/deconnexion", name="security_logout")
      */

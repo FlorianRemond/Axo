@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+    <head>
+        <title>reCAPTCHA demo: Simple page</title>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    </head>
    <h1> Connexion à l'Axoblog</h1>
 {#formulaire de connexion en méthode Post pour masquer le mot de de passe #}
    <form action ="{{ path ('security_login') }}" method="post">
@@ -21,11 +24,9 @@
             <input placeholder="Mot de passe " required name ="_password"
                    type ="password" class="form-control">
          </div>
-
+       <div class="g-recaptcha" data-sitekey="6Le9gbsUAAAAAI6GfyCxhy09UljTbisj-5skusGL"></div>
          <div class="form-group">
-             <button type="submit" class="btn btn-success" style="background:#333645">Connexion</button>
+             <button type="submit" name="submitpost" class="btn btn-success" style="background:#333645">Connexion</button>
          </div>
    </form>
-
-
 {% endblock %}
