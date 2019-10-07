@@ -88,7 +88,6 @@ class SecurityController extends AbstractController
     }
 
     //formulaire de connexion
-
     /**
      * @Route("/connexion", name ="security_login")
      * @param AuthenticationUtils $utils
@@ -113,6 +112,7 @@ class SecurityController extends AbstractController
                 var_dump('Captcha non rempli');
             }
         }
+        sleep(2);
         //recupérer les erreurs d'authentification
         $error = $utils->getLastAuthenticationError();
         $username = $utils->getLastUsername();
