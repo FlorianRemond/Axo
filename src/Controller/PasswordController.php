@@ -66,7 +66,7 @@ class PasswordController extends AbstractController
             }
             $token = $user->getToken();
             $email = $user->getEmail();
-            $template = 'MailtoResetPassword.html.twig';
+            $template = 'mailtoResetPassword.html.twig';
             $username = $user->getUsername();
             $mailerService->sendToken($token, $email, $username, $template);
             return $this->redirectToRoute('home');

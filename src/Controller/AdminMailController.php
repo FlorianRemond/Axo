@@ -30,7 +30,7 @@ class AdminMailController extends AbstractController
             ->setTo($destinataires)
             ->setBody('Un nouvel article d\'Axocap est paru, il n\'attend que votre lecture ! ');
         $mailer->send($message);
-        return $this->redirectToRoute('admin_article_index');
+       // return $this->redirectToRoute('admin_article_index');
 
     }
 }
