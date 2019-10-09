@@ -27,7 +27,7 @@ class MailerService extends AbstractController
 
         $message = (new \Swift_Message('Mail d\'Axocap'))
             ->setFrom('axocapmailing@gmail.com')
-            ->setTo('axocapmailing@gmail.com')
+            ->setTo($to)
             ->setBody(
                 $this->renderView(
                     'emails/' . $template,
