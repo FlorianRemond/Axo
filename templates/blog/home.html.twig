@@ -27,7 +27,7 @@
                     {% endif %}
 
         {# On applique des conditions telles que : si utilisateur n'est pas  connecté et que l'article est privé, le contenu
-         ne s'affiche pas et demande au User de s'identifier #}
+         ne s'affiche pas et demande au user de s'identifier #}
                     {% if article.isPrivate and not app.user  %}
                         <div>
                             {{ article.content|truncate(100)|raw}}
@@ -36,7 +36,7 @@
                         <div> Merci de vous connecter pour lire la suite.</div>
                         <a href="{{ path('security_login')}}" class="badge badge-primary">Connexion</a>
                     {% endif %}
-        {# Ici on affiche le contenu de l'article dans le cas ou celui est public, sans prise en compte de l'état du User#}
+        {# Ici on affiche le contenu de l'article dans le cas ou celui est public, sans prise en compte de l'état du user#}
                     {% if article.isPrivate == false %}
                     <div>
                         {{ article.content|raw}}

@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Event\AuthenticationEvent;
 
-/*Un eventlistener qui ici permet de mettre à jour la date de connexion lorsque le User se log */
+/*Un eventlistener qui ici permet de mettre à jour la date de connexion lorsque le user se log */
 
 class LoginListener
 {

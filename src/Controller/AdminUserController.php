@@ -80,7 +80,7 @@ class AdminUserController extends AbstractController
             $manager->flush();
             return $this->redirectToRoute('admin_user_index');
         }
-        //Vérification des données passées pour le User
+        //Vérification des données passées pour le user
         //dump($user);
         return $this->render('security/registration.html.twig', [
             'formUser' => $formUser->createView()
@@ -109,7 +109,7 @@ class AdminUserController extends AbstractController
 
             return $this->redirectToRoute('admin_user_index');
         }
-        //Vérification des données passées pour le User
+        //Vérification des données passées pour le user
         //dump($user);
         return $this->render('admin/user/edit.html.twig', [
             'formUser' => $formEditUser->createView()

@@ -70,7 +70,7 @@ class SecurityController extends AbstractController
             $token = $user->getToken();
             $email = $user->getEmail();
             $username = $user->getUsername();
-            //envoi de mail avec les données du User
+            //envoi de mail avec les données du user
             $mailerService->sendToken($token, $email, $username, 'registration.html.twig');
             //message informatif
             $this->addFlash(
@@ -79,7 +79,7 @@ class SecurityController extends AbstractController
             );
             return $this->redirectToRoute('security_login');
         }
-        //Vérification des données passées pour le User
+        //Vérification des données passées pour le user
         return $this->render('security/registration.html.twig', [
             'formUser' => $formUser->createView(),
             'last_username' => $lastUsername,
